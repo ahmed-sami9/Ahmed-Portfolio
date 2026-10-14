@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+/*
+  Design tokens. Every color and font in the site comes from here.
+  Tailwind turns each one into utilities: --color-accent -> text-accent, bg-accent, border-accent...
+*/
+@theme {
+  /* Colors */
+  --color-bg: #061713; /* page background */
+  --color-text: #e8f0ea; /* headings, primary text */
+  --color-muted: #9fb3a8; /* body copy, secondary text */
+  --color-subtle: #6f857a; /* captions, least important text */
+  --color-line: #1d332c; /* hairlines, borders */
+  --color-accent: #d3bc80; /* labels, frame lines, small highlights */
+  --color-accent-strong: #fccb86; /* primary button fill */
+  --color-on-accent: #241c11; /* text on top of the accent */
+
+  /* Fonts */
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Animations (used through motion-safe: so they turn off for reduced motion) */
+  --animate-typing: typing 1.4s steps(var(--chars)) 0.6s both;
+  --animate-blink: blink 1s step-end infinite;
+
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: calc(var(--chars) * 1ch);
+    }
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+}
+
+@layer base {
+  html {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  /* One consistent, visible focus ring for keyboard users everywhere */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+}
