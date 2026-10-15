@@ -54,6 +54,11 @@
     }
   }
 
+  /* Anchor jumps (#projects...) stop below the sticky navbar instead of under it */
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+
   /* One consistent, visible focus ring for keyboard users everywhere */
   :focus-visible {
     outline: 2px solid var(--color-accent);

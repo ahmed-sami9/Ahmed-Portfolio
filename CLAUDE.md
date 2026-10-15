@@ -30,8 +30,9 @@ Its job is to get him hired. It is a feeling and a shape, not a complex app.
 src/
   data/                     all content (profile, navigation, projects)
   components/               shared across the whole site
-    layout/                 Navbar, Background
-    ui/                     icons and other small reusable pieces
+    layout/                 Navbar, Background, Section (shared section wrapper)
+    ui/                     icons, SectionHeading and other small reusable pieces
+  hooks/                    shared React hooks (useScrolled, useActiveSection)
   pages/
     PortfolioPage/
       PortfolioPage.tsx     composes the sections in reading order
