@@ -31,8 +31,8 @@ src/
   data/                     all content (profile, navigation, projects)
   components/               shared across the whole site
     layout/                 Navbar, MobileMenu, Background, Section (shared section wrapper)
-    ui/                     icons, SectionHeading and other small reusable pieces
-  hooks/                    shared React hooks (useScrolled, useActiveSection)
+    ui/                     icons, SectionHeading, TerminalLine and other small reusable pieces
+  hooks/                    shared React hooks (useScrolled, useActiveSection, useInView, usePrefersReducedMotion)
   pages/
     PortfolioPage/
       PortfolioPage.tsx     composes the sections in reading order
@@ -73,6 +73,9 @@ Be direct. Say when there is a better way. Do not just agree.
 - Display name: Ahmed Elgaml, monogram AE
 - Hero terminal line: "open to remote roles"
 - Hero tagline: "I build full-stack web applications with the MERN stack, and I learn whatever a problem needs beyond it. I make sure what I ship is reliable today and still easy to change a year from now."
+
+- Projects: one reusable ProjectCard renders every entry in `data/projects.ts`. Wide, short cards (small thumbnail left, text right) at every size; 1 column, 2 side by side from laptop width (lg). Card shows name, status, 2-line summary, 3 tags + "+N" and links (same row when it fits); hover = green gradient border (CardGlow) + soft green glow (`--color-glow`), no movement; amber stays reserved for clickable things; the engineering line lives in the project details view. Hover the thumbnail (desktop) = floating preview that cycles screenshots; click/tap = full viewer (<dialog>). Each card remembers its screenshot position. No filter chips (revisit at 6+ projects).
+- Projects section ends with a terminal line that links to GitHub.
 
 ## Decisions still open
 

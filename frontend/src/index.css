@@ -14,6 +14,8 @@
   --color-accent: #d3bc80; /* labels, frame lines, small highlights */
   --color-accent-strong: #fccb86; /* primary button fill */
   --color-on-accent: #241c11; /* text on top of the accent */
+  --color-success: #4ade80; /* "live" status dot */
+  --color-glow: #4fb38a; /* soft green light: card hover border and glow */
 
   /* Fonts */
   --font-display: "Playfair Display", Georgia, serif;
@@ -38,6 +40,29 @@
       opacity: 0;
     }
   }
+}
+
+/*
+  The project card's hover border: a 1px ring of light.
+  Two backgrounds, top one first:
+    1. a small warm highlight on the top edge, like light glinting off it (the "streak")
+    2. green running round the border, brighter top-left and down the right, dimmer bottom-left
+  The mask keeps only the 1px padding ring: full box minus (exclude) the content area.
+*/
+@utility card-glow-ring {
+  padding: 1px;
+  background:
+    radial-gradient(140px 24px at 32% 0%, var(--color-accent), transparent 70%),
+    linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--color-glow) 85%, transparent) 0%,
+      color-mix(in oklab, var(--color-glow) 30%, transparent) 45%,
+      color-mix(in oklab, var(--color-glow) 15%, transparent) 70%,
+      color-mix(in oklab, var(--color-glow) 60%, transparent) 100%
+    );
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
 }
 
 @layer base {

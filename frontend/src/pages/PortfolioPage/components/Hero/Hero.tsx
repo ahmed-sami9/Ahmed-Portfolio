@@ -1,7 +1,7 @@
 import { ArrowRightIcon, GitHubIcon } from "@/components/ui/icons";
 import { profile } from "@/data/profile";
 import HeroPhoto from "./components/HeroPhoto";
-import StatusLine from "./components/StatusLine";
+import TerminalLine from "@/components/ui/TerminalLine";
 
 // Phones (< md, 768px): one column, text -> buttons -> framed photo -> terminal line.
 // Tablets and up (md+): two columns, text + terminal line on the left, photo on the right.
@@ -55,7 +55,7 @@ function Hero() {
 
         {/* Tablet/desktop position: under the buttons */}
         <div className="mt-12 hidden md:block">
-          <StatusLine text={profile.terminalLine} />
+          <TerminalLine text={profile.terminalLine} />
         </div>
       </div>
 
@@ -65,7 +65,7 @@ function Hero() {
           reordering the grid, so the desktop layout stays exactly as it is.
           display:none removes the hidden copy from screen readers too. */}
       <div className="md:hidden">
-        <StatusLine text={profile.terminalLine} />
+        <TerminalLine text={profile.terminalLine} />
       </div>
     </section>
   );
