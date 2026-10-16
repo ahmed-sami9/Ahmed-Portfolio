@@ -55,3 +55,22 @@ export function GitHubIcon({ className = "size-4" }: IconProps) {
     </svg>
   );
 }
+
+export function MenuIcon({ className = "size-6" }: IconProps) {
+  return (
+    <svg {...base} strokeWidth={1.5} className={className}>
+      <path d="M4 7h16" />
+      <path d="M4 12h16" />
+      <path d="M4 17h16" />
+    </svg>
+  );
+}
+
+export function CloseIcon({ className = "size-6" }: IconProps) {
+  return (
+    <svg {...base} strokeWidth={1.5} className={className}>
+      <path d="M6 6l12 12" />
+      <path d="M18 6 6 18" />
+    </svg>
+  );
+}
