@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Link } from "react-router";
 import { CloseIcon, DownloadIcon, MenuIcon } from "@/components/ui/icons";
 import { navLinks } from "@/data/navigation";
 import { profile } from "@/data/profile";
@@ -65,8 +66,8 @@ function MobileMenu({ open, onOpenChange, activeId }: MobileMenuProps) {
               const isActive = link.id === activeId;
               return (
                 <li key={link.id} className="border-b border-line">
-                  <a
-                    href={`#${link.id}`}
+                  <Link
+                    to={`/#${link.id}`}
                     aria-current={isActive ? "location" : undefined}
                     className="flex items-baseline gap-4 py-5"
                   >
@@ -80,7 +81,7 @@ function MobileMenu({ open, onOpenChange, activeId }: MobileMenuProps) {
                     >
                       {link.label}
                     </span>
-                  </a>
+                  </Link>
                 </li>
               );
             })}

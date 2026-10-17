@@ -1,8 +1,8 @@
+import ProjectStatusBadge from "@/components/project/ProjectStatusBadge";
+import ProjectTags from "@/components/project/ProjectTags";
 import type { Project } from "@/data/projects";
 import CardGlow from "./CardGlow";
 import ProjectLinks from "./ProjectLinks";
-import ProjectStatusBadge from "./ProjectStatusBadge";
-import ProjectTags from "./ProjectTags";
 import ProjectThumbnail from "./ProjectThumbnail";
 
 type ProjectCardProps = {
@@ -62,7 +62,7 @@ function ProjectCard({ project, number }: ProjectCardProps) {
           <div className="mt-auto flex flex-wrap items-center justify-between gap-x-4 gap-y-2 pt-1">
             <ProjectTags tags={stack} collapsedMax={3} />
             <div className="ml-auto">
-              <ProjectLinks name={name} links={links} />
+              <ProjectLinks slug={slug} name={name} links={links} />
             </div>
           </div>
         </div>

@@ -6,6 +6,8 @@ Its job is to get him hired. It is a feeling and a shape, not a complex app.
 ## Stack
 
 - Vite + React + TypeScript + Tailwind (v4, tokens in `@theme` in `src/index.css`)
+- React Router (`react-router`): `/` = the portfolio, `/projects/:slug` = a project page. Routes live in `App.tsx`.
+- Hosting needs a single-page-app rewrite (every URL serves `index.html`), or `/projects/...` 404s on refresh.
 - Frontend only. No backend. No Next.js (no SEO need, the link is shared directly).
 
 ## Code quality
@@ -30,10 +32,13 @@ Its job is to get him hired. It is a feeling and a shape, not a complex app.
 src/
   data/                     all content (profile, navigation, projects)
   components/               shared across the whole site
-    layout/                 Navbar, MobileMenu, Background, Section (shared section wrapper)
+    layout/                 RootLayout (shared frame of every page), Navbar, MobileMenu, Background, Section
+    project/                pieces used by both the project cards and the project page (tags, status badge)
     ui/                     icons, SectionHeading, TerminalLine and other small reusable pieces
-  hooks/                    shared React hooks (useScrolled, useActiveSection, useInView, usePrefersReducedMotion)
+  hooks/                    shared React hooks (scroll, active section, in-view, reduced motion, page title, back to projects)
   pages/
+    ProjectPage/            /projects/:slug: the project panel (gallery, intro, features + problem)
+    NotFoundPage/           any unknown URL
     PortfolioPage/
       PortfolioPage.tsx     composes the sections in reading order
       components/
@@ -80,8 +85,17 @@ Be direct. Say when there is a better way. Do not just agree.
 
 - Projects: one reusable ProjectCard renders every entry in `data/projects.ts`. Wide, short cards (thumbnail left, text right): one column below lg, a 2×2 grid from lg up. Card shows name, status, 2-line summary, tech-stack pills (green-tinted fill; all of them when the card's text column is at least 20rem wide via a container query, otherwise 3 + "+N") and links; hover = green gradient border (CardGlow) + soft green glow (`--color-glow`), no movement; amber stays reserved for clickable things. Hover the thumbnail (desktop) = floating preview that cycles screenshots; click/tap = full viewer (<dialog>). Each card remembers its screenshot position. No filter chips (revisit at 6+ projects).
 - Projects section ends with a terminal line that links to GitHub.
+- Project click: "View project" opens a real page, `/projects/:slug`, in the same tab (not a modal, not a new tab). Its top is one framed panel (four subtle gold L-corners that fade into the border, like the hero photo bracket; the screenshot has the cards' glow ring always on): screenshot gallery left, intro right (name, tagline · role, status, summary, stack, demo + source code), then key features next to the problem. The X (and browser Back) returns to the exact card clicked; opened from a shared link, the X goes to `/#projects`. Navbar links are `/#section` router links so they work from every page.
+
+## Before launch (placeholders that must not go public)
+
+- "Live demo" on the project page is a do-nothing button until `links.demo` is set in `data/projects.ts`
+- "Explore the technical details" scrolls to `#technical-details`, which doesn't exist until the deep dive is built
+- `data/projects.ts`: Diraya repeated 4 times, placeholder screenshots, GitHub URL `your-username`, Diraya's problem text (check it's in Ahmed's words)
+- `profile.ts`: real GitHub URL; `public/resume.pdf` must exist
+- Hosting: SPA rewrite (every URL serves `index.html`)
 
 ## Decisions still open
 
-- Project click: modal vs a real page/route, with the technical details expanding below
+- The project page's technical deep dive (architecture, database, auth, challenges, decisions), below the panel
 - Whether the footer also gets a second photo of him, or keeps the mountain and quote

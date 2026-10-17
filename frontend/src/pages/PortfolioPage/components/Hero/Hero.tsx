@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { ArrowRightIcon, GitHubIcon } from "@/components/ui/icons";
 import { profile } from "@/data/profile";
 import HeroPhoto from "./components/HeroPhoto";
@@ -36,13 +37,13 @@ function Hero() {
         </p>
 
         <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
-          <a
-            href="#projects"
+          <Link
+            to="/#projects"
             className="group inline-flex items-center gap-2 rounded-full bg-accent-strong px-6 py-3 text-sm font-medium text-on-accent transition hover:brightness-105"
           >
             View my projects
             <ArrowRightIcon className="size-4 transition-transform motion-safe:group-hover:translate-x-0.5" />
-          </a>
+          </Link>
 
           <a
             href={profile.links.github}

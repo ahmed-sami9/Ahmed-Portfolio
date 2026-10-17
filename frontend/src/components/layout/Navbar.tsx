@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link, useMatch } from "react-router";
 import { DownloadIcon } from "@/components/ui/icons";
 import { navLinks, sectionIds } from "@/data/navigation";
 import { profile } from "@/data/profile";
@@ -8,7 +9,10 @@ import MobileMenu from "./MobileMenu";
 
 function Navbar() {
   const scrolled = useScrolled();
-  const activeId = useActiveSection(sectionIds);
+  const sectionInView = useActiveSection(sectionIds);
+  // On a project page there are no sections to track: "Projects" is where you are.
+  const onProjectPage = useMatch("/projects/:slug") !== null;
+  const activeId = onProjectPage ? "projects" : sectionInView;
   const [menuOpen, setMenuOpen] = useState(false);
 
   // The bar needs its background when scrolled, and also when the mobile menu is open
@@ -33,15 +37,20 @@ function Navbar() {
       />
 
       <div className="mx-auto flex h-20 w-full max-w-page items-center justify-between px-4 sm:px-6 lg:px-8">
-        <a
-          href="#home"
+        {/*
+          Links are router <Link>s to "/#section", not plain "#section" anchors, so they also work
+          from a project page: there they go back to the portfolio, then scroll to the section.
+          On the portfolio itself they just scroll (smoothly).
+        */}
+        <Link
+          to="/#home"
           aria-label={`${profile.name}, back to top`}
           onClick={() => setMenuOpen(false)}
           className="font-display text-2xl tracking-tight text-text"
         >
           {profile.initials}
           <span className="text-accent">.</span>
-        </a>
+        </Link>
 
         {/* Desktop links */}
         <nav aria-label="Main" className="hidden md:block">
@@ -50,8 +59,8 @@ function Navbar() {
               const isActive = link.id === activeId;
               return (
                 <li key={link.id}>
-                  <a
-                    href={`#${link.id}`}
+                  <Link
+                    to={`/#${link.id}`}
                     // Tells screen readers which section you're in, like the dot does visually
                     aria-current={isActive ? "location" : undefined}
                     className={`relative transition-colors hover:text-text ${
@@ -65,7 +74,7 @@ function Navbar() {
                         isActive ? "opacity-100" : "opacity-0"
                       }`}
                     />
-                  </a>
+                  </Link>
                 </li>
               );
             })}
