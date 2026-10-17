@@ -49,6 +49,10 @@ src/
 - Imports: `@/` means `src/` (alias in `vite.config.ts` + `tsconfig.app.json`).
   Use `@/...` for anything outside the current folder, `./...` for siblings.
 
+## Layout
+
+- Page width is one token, `--container-page` (80rem) in `index.css`, used as `max-w-page` by the navbar, the hero and `Section`. Never hard-code a page width; their left edges must always line up.
+
 ## Look and feel
 
 - Professional first. He is a developer, not a designer. Do not overdo it.
@@ -74,7 +78,7 @@ Be direct. Say when there is a better way. Do not just agree.
 - Hero terminal line: "open to remote roles"
 - Hero tagline: "I build full-stack web applications with the MERN stack, and I learn whatever a problem needs beyond it. I make sure what I ship is reliable today and still easy to change a year from now."
 
-- Projects: one reusable ProjectCard renders every entry in `data/projects.ts`. Wide, short cards (small thumbnail left, text right) at every size; 1 column, 2 side by side from laptop width (lg). Card shows name, status, 2-line summary, 3 tags + "+N" and links (same row when it fits); hover = green gradient border (CardGlow) + soft green glow (`--color-glow`), no movement; amber stays reserved for clickable things; the engineering line lives in the project details view. Hover the thumbnail (desktop) = floating preview that cycles screenshots; click/tap = full viewer (<dialog>). Each card remembers its screenshot position. No filter chips (revisit at 6+ projects).
+- Projects: one reusable ProjectCard renders every entry in `data/projects.ts`. Wide, short cards (thumbnail left, text right): one column below lg, a 2×2 grid from lg up. Card shows name, status, 2-line summary, tech-stack pills (green-tinted fill; all of them when the card's text column is at least 20rem wide via a container query, otherwise 3 + "+N") and links; hover = green gradient border (CardGlow) + soft green glow (`--color-glow`), no movement; amber stays reserved for clickable things. Hover the thumbnail (desktop) = floating preview that cycles screenshots; click/tap = full viewer (<dialog>). Each card remembers its screenshot position. No filter chips (revisit at 6+ projects).
 - Projects section ends with a terminal line that links to GitHub.
 
 ## Decisions still open

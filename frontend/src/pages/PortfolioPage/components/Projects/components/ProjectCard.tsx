@@ -34,8 +34,11 @@ function ProjectCard({ project, number }: ProjectCardProps) {
           <ProjectThumbnail name={name} screenshots={screenshots} />
         </div>
 
-        {/* min-w-0 lets the text wrap or truncate inside the row instead of widening the card */}
-        <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+        {/*
+          min-w-0 lets the text wrap inside the row instead of widening the card.
+          @container makes this column the thing ProjectTags measures to decide how many fit.
+        */}
+        <div className="@container flex min-w-0 flex-1 flex-col gap-1.5">
           <div className="flex items-start justify-between gap-3">
             <div className="flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-1">
               <h3 id={titleId} className="font-display text-xl tracking-tight text-text">
@@ -57,7 +60,7 @@ function ProjectCard({ project, number }: ProjectCardProps) {
             to the bottom, so cards in a row line up.
           */}
           <div className="mt-auto flex flex-wrap items-center justify-between gap-x-4 gap-y-2 pt-1">
-            <ProjectTags tags={stack} max={3} />
+            <ProjectTags tags={stack} collapsedMax={3} />
             <div className="ml-auto">
               <ProjectLinks name={name} links={links} />
             </div>

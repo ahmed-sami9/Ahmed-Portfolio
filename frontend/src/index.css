@@ -17,6 +17,10 @@
   --color-success: #4ade80; /* "live" status dot */
   --color-glow: #4fb38a; /* soft green light: card hover border and glow */
 
+  /* Layout: the page's content width, shared by the navbar, the hero and every section,
+     so their left and right edges always line up. Change it here, and everything follows. */
+  --container-page: 80rem; /* 1280px */
+
   /* Fonts */
   --font-display: "Playfair Display", Georgia, serif;
   --font-sans: "Inter", system-ui, sans-serif;
