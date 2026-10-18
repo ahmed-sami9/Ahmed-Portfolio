@@ -91,3 +91,96 @@ export function CheckIcon({ className = "size-4" }: IconProps) {
     </svg>
   );
 }
+
+// --- Technical deep dive: sidebar and diagram ---
+
+export function LayersIcon({ className = "size-4" }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <path d="m12 3 9 5-9 5-9-5 9-5Z" />
+      <path d="m3 13 9 5 9-5" />
+    </svg>
+  );
+}
+
+export function DatabaseIcon({ className = "size-4" }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <ellipse cx="12" cy="5.5" rx="8" ry="2.5" />
+      <path d="M4 5.5v13c0 1.4 3.6 2.5 8 2.5s8-1.1 8-2.5v-13" />
+      <path d="M4 12c0 1.4 3.6 2.5 8 2.5s8-1.1 8-2.5" />
+    </svg>
+  );
+}
+
+export function LightbulbIcon({ className = "size-4" }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <path d="M9 18h6" />
+      <path d="M10 21h4" />
+      <path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3Z" />
+    </svg>
+  );
+}
+
+export function FlagIcon({ className = "size-4" }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <path d="M5 21V4" />
+      <path d="M5 4h11l-2 4 2 4H5" />
+    </svg>
+  );
+}
+
+export function RotateIcon({ className = "size-4" }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <path d="M4 12a8 8 0 1 0 2.3-5.7" />
+      <path d="M4 4v4h4" />
+    </svg>
+  );
+}
+
+export function MonitorIcon({ className = "size-4" }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <rect x="3" y="4" width="18" height="12" rx="2" />
+      <path d="M8 20h8" />
+      <path d="M12 16v4" />
+    </svg>
+  );
+}
+
+export function ServerIcon({ className = "size-4" }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <rect x="3" y="4" width="18" height="7" rx="2" />
+      <rect x="3" y="13" width="18" height="7" rx="2" />
+      <path d="M7 7.5h.01" />
+      <path d="M7 16.5h.01" />
+    </svg>
+  );
+}
+
+export function FileCodeIcon({ className = "size-4" }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" />
+      <path d="M14 3v5h5" />
+      <path d="m10 12-2 2 2 2" />
+      <path d="m14 12 2 2-2 2" />
+    </svg>
+  );
+}
+
+export function BranchIcon({ className = "size-4" }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <circle cx="6" cy="5" r="2" />
+      <circle cx="6" cy="19" r="2" />
+      <circle cx="18" cy="8" r="2" />
+      <path d="M6 7v10" />
+      <path d="M18 10c0 4-6 3-12 7" />
+    </svg>
+  );
+}

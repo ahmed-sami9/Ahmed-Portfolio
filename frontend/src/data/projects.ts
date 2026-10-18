@@ -1,3 +1,5 @@
+import { dirayaCaseStudy } from "./caseStudies/diraya";
+import type { CaseStudy } from "./caseStudies/types";
 import { profile } from "./profile";
 
 // ---------------------------------------------------------------------------
@@ -45,6 +47,7 @@ export type Project = {
     demoNote?: string; // one line under the demo button, e.g. how the demo account works
     repo?: string;
   };
+  caseStudy?: CaseStudy; // the technical deep dive under the panel (its own file in caseStudies/)
 };
 
 const diraya: Project = {
@@ -89,6 +92,7 @@ const diraya: Project = {
     // demoNote: "You get your own sandbox account with sample data. No sign-up.",
     repo: "https://github.com/your-username/diraya", // TODO: real repo URL
   },
+  caseStudy: dirayaCaseStudy,
 };
 
 // Order = display order. Put the strongest project first.

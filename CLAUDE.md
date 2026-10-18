@@ -31,13 +31,16 @@ Its job is to get him hired. It is a feeling and a shape, not a complex app.
 ```
 src/
   data/                     all content (profile, navigation, projects)
+    caseStudies/            each project's technical deep dive (types.ts + one file per project)
   components/               shared across the whole site
     layout/                 RootLayout (shared frame of every page), Navbar, MobileMenu, Background, Section
     project/                pieces used by both the project cards and the project page (tags, status badge)
     ui/                     icons, SectionHeading, TerminalLine and other small reusable pieces
+  utils/                    small plain functions (no React), e.g. scrollToSection
   hooks/                    shared React hooks (scroll, active section, in-view, reduced motion, page title, back to projects)
   pages/
-    ProjectPage/            /projects/:slug: the project panel (gallery, intro, features + problem)
+    ProjectPage/            /projects/:slug: the project panel (gallery, intro, features + problem),
+                            then CaseStudy/ (the technical deep dive, one folder per section)
     NotFoundPage/           any unknown URL
     PortfolioPage/
       PortfolioPage.tsx     composes the sections in reading order
@@ -87,15 +90,19 @@ Be direct. Say when there is a better way. Do not just agree.
 - Projects section ends with a terminal line that links to GitHub.
 - Project click: "View project" opens a real page, `/projects/:slug`, in the same tab (not a modal, not a new tab). Its top is one framed panel (four subtle gold L-corners that fade into the border, like the hero photo bracket; the screenshot has the cards' glow ring always on): screenshot gallery left, intro right (name, tagline · role, status, summary, stack, demo + source code), then key features next to the problem. The X (and browser Back) returns to the exact card clicked; opened from a shared link, the X goes to `/#projects`. Navbar links are `/#section` router links so they work from every page.
 
+- Technical deep dive: always on the page under the panel (never collapsed, never a modal or its own route); "Explore the technical details" and the sidebar only scroll to it (buttons, not #links, so Back still closes the project). One framed box like the panel: sidebar of 5 sections (Architecture, Database, Key decisions, Challenges, What I'd do differently), sticky on desktop, a swipeable row on phones; unbuilt sections show as "soon" and become links by themselves once their data exists. Every claim must be true: no Prisma, no features or security details that aren't built.
+- Architecture section: summary, a 3-box diagram (Browser → Express API → PostgreSQL) with numbered steps that match a real request traced below, backend layers next to the rule "controllers don't know about the database, services don't know about HTTP", notes (app.ts/server.ts, /api/v1), frontend layers. Layout uses container queries (the sidebar shares the width).
+
 ## Before launch (placeholders that must not go public)
 
 - "Live demo" on the project page is a do-nothing button until `links.demo` is set in `data/projects.ts`
 - "Explore the technical details" scrolls to `#technical-details`, which doesn't exist until the deep dive is built
 - `data/projects.ts`: Diraya repeated 4 times, placeholder screenshots, GitHub URL `your-username`, Diraya's problem text (check it's in Ahmed's words)
+- `data/caseStudies/diraya.ts`: the request flow uses example names (AttendanceForm, useMarkAttendance...); replace with one real action; confirm how the request body is validated and whether the backend is TypeScript
 - `profile.ts`: real GitHub URL; `public/resume.pdf` must exist
 - Hosting: SPA rewrite (every URL serves `index.html`)
 
 ## Decisions still open
 
-- The project page's technical deep dive (architecture, database, auth, challenges, decisions), below the panel
+- Deep dive sections still to build: Database, Key decisions, Challenges, What I'd do differently
 - Whether the footer also gets a second photo of him, or keeps the mountain and quote

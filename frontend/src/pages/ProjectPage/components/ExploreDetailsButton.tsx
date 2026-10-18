@@ -1,24 +1,16 @@
 import { ArrowRightIcon } from "@/components/ui/icons";
-
-// The section the button leads to. The technical deep dive (next phase) will use this id.
-export const TECHNICAL_DETAILS_ID = "technical-details";
+import { scrollToSection } from "@/utils/scrollToSection";
+import { CASE_STUDY_ID } from "./CaseStudy/caseStudySections";
 
 // "Explore the technical details": the bridge from the panel (for everyone) to the deep dive
-// (for engineers) below it. It scrolls down to that section, smoothly unless the visitor
-// prefers reduced motion (the global scroll-behavior in index.css handles that).
-//
-// A button, not a #link: the section is on this same page, and a link would add a history
-// entry, so Back would first scroll up again instead of closing the project.
-// Until the deep dive exists there's nothing to scroll to, so the click does nothing.
+// (for engineers) below it. It scrolls down to the deep-dive box and moves focus there
+// (scrollToSection explains why it's a button and not a #link).
+// If a project has no deep dive yet, there's nothing to scroll to and the click does nothing.
 function ExploreDetailsButton() {
-  const scrollToDetails = () => {
-    document.getElementById(TECHNICAL_DETAILS_ID)?.scrollIntoView();
-  };
-
   return (
     <button
       type="button"
-      onClick={scrollToDetails}
+      onClick={() => scrollToSection(CASE_STUDY_ID)}
       className="group mt-8 flex w-full items-center justify-center gap-2 rounded-xl border border-accent/40 py-3 text-sm text-accent transition-colors hover:bg-accent/5 short:mt-6"
     >
       Explore the technical details
