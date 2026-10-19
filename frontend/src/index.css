@@ -29,6 +29,8 @@
   /* Animations (used through motion-safe: so they turn off for reduced motion) */
   --animate-typing: typing 1.4s steps(var(--chars)) 0.6s both;
   --animate-blink: blink 1s step-end infinite;
+  --animate-draw-line: draw-line 0.5s ease-out both; /* schema lines; skipped in JS for reduced motion */
+  --animate-fade-in: fade-in 0.3s ease-out both;
 
   @keyframes typing {
     from {
@@ -36,6 +38,23 @@
     }
     to {
       width: calc(var(--chars) * 1ch);
+    }
+  }
+
+  /* Paths drawn with pathLength=1 and stroke-dasharray=1: an offset of 1 hides the line,
+     0 shows all of it, so this "draws" any path from its start to its end. */
+  @keyframes draw-line {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
     }
   }
 
@@ -103,6 +122,15 @@
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]) {
     cursor: pointer;
+  }
+
+  /*
+    Code is shown exactly as written. JetBrains Mono would otherwise join characters into
+    symbols (<= into ≤, <> into a diamond), which reads as different code.
+  */
+  code,
+  pre {
+    font-variant-ligatures: none;
   }
 
   /* One consistent, visible focus ring for keyboard users everywhere */

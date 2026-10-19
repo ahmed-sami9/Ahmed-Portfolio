@@ -40,7 +40,9 @@ src/
   hooks/                    shared React hooks (scroll, active section, in-view, reduced motion, page title, back to projects)
   pages/
     ProjectPage/            /projects/:slug: the project panel (gallery, intro, features + problem),
-                            then CaseStudy/ (the technical deep dive, one folder per section)
+                            then CaseStudy/ (the technical deep dive): shared pieces at its root
+                            (CaseStudySection, GroupFrame, PointList, RuleCallout...), one folder
+                            per section (architecture/, database/)
     NotFoundPage/           any unknown URL
     PortfolioPage/
       PortfolioPage.tsx     composes the sections in reading order
@@ -90,19 +92,24 @@ Be direct. Say when there is a better way. Do not just agree.
 - Projects section ends with a terminal line that links to GitHub.
 - Project click: "View project" opens a real page, `/projects/:slug`, in the same tab (not a modal, not a new tab). Its top is one framed panel (four subtle gold L-corners that fade into the border, like the hero photo bracket; the screenshot has the cards' glow ring always on): screenshot gallery left, intro right (name, tagline · role, status, summary, stack, demo + source code), then key features next to the problem. The X (and browser Back) returns to the exact card clicked; opened from a shared link, the X goes to `/#projects`. Navbar links are `/#section` router links so they work from every page.
 
-- Technical deep dive: always on the page under the panel (never collapsed, never a modal or its own route); "Explore the technical details" and the sidebar only scroll to it (buttons, not #links, so Back still closes the project). One framed box like the panel: sidebar of 5 sections (Architecture, Database, Key decisions, Challenges, What I'd do differently), sticky on desktop, a swipeable row on phones; unbuilt sections show as "soon" and become links by themselves once their data exists. Every claim must be true: no Prisma, no features or security details that aren't built.
+- Technical deep dive: always on the page under the panel (never collapsed, never a modal or its own route). One framed box like the panel, with a sidebar of tabs and ONE section shown at a time (WAI-ARIA tabs: arrow keys / Home / End, roving tabindex; sticky column from lg, a swipeable row on phones). The open section is in the URL as `?section=<id>` (replace, never a new history entry, so Back still closes the project; refresh and shared links keep the section). Switching brings the box's top back into view; below lg (where the sidebar isn't in view) each section ends with a Previous / Next pager; from lg the sticky sidebar does that job, so no pager (first section: Next only; last: Previous only; an unbuilt neighbour shows muted with "Coming soon", never a dead click; focus moves into the new section). "Explore the technical details" only scrolls to the box (a button, not a #link). Unbuilt sections show as "soon" (aria-disabled, skipped by the arrow keys) and become tabs by themselves once their data exists. Every claim must be true: no Prisma, no features or security details that aren't built.
+- Back / X on the project page: `history.state.idx > 0` means the visitor came from inside the site, so go back one step; otherwise (opened from a shared link) go to `/#projects`.
 - Architecture section: summary, a 3-box diagram (Browser → Express API → PostgreSQL) with numbered steps that match a real request traced below, backend layers next to the rule "controllers don't know about the database, services don't know about HTTP", notes (app.ts/server.ts, /api/v1), frontend layers. Layout uses container queries (the sidebar shares the width).
+
+- Database section: summary, schema diagram (9 core tables on a 4×3 grid, chosen so no lines cross; lines drawn by an SVG measured from the real table positions, in crow's-foot ER notation (bar = one, fork = many) with a plain-words legend under the diagram; the lines draw in once, parent → child level by level, when the diagram is first seen (none for reduced motion); hovering a table brightens its lines and fades unrelated tables (an extra only, nothing depends on it); shown whenever the diagram has 42rem of its own width (`@2xl`, i.e. from 1024px laptops beside the sidebar), slightly tighter until `@4xl`; below that the same tables are three short vertical chains (Structure, Attendance, Exams; `chains` in the data) with 1/N links, compact cards and chips for the parents the chain doesn't show), "Rules the database enforces" (framed, plain English + the constraint, + the "nothing summarized is stored" callout), design decisions, the real `saveSheet` query, framed like the rules (the section's two key blocks), with lettered margin notes (letters = "look here", outlined; numbers = steps, solid); a note can cover several lines (`lines`, first one carries the letter) and hovering a note or its line lights up all of them; notes sit beside the code from 53rem, code column sized to the code so it never scrolls sideways there; no modal or click-to-open (the proof must be visible without effort), safety. In this section amber means only: the central table, the query letters, the key idea.
+- Sections are numbered 01, 02... from their place in the sidebar. Sidebar: Architecture, Database, Authentication, Key decisions, Challenges, What I'd do differently. Authentication gets its own section (httpOnly cookie + revocable server-side sessions, CSRF Origin check, argon2, rate limits, Google sign-in, hashed single-use tokens).
+- Content of the deep dive is checked against the Diraya codebase (C:\dev\Diraya). No claim that isn't in the code (no Payments table yet, no student interface yet).
 
 ## Before launch (placeholders that must not go public)
 
 - "Live demo" on the project page is a do-nothing button until `links.demo` is set in `data/projects.ts`
 - "Explore the technical details" scrolls to `#technical-details`, which doesn't exist until the deep dive is built
 - `data/projects.ts`: Diraya repeated 4 times, placeholder screenshots, GitHub URL `your-username`, Diraya's problem text (check it's in Ahmed's words)
-- `data/caseStudies/diraya.ts`: the request flow uses example names (AttendanceForm, useMarkAttendance...); replace with one real action; confirm how the request body is validated and whether the backend is TypeScript
+- `data/caseStudies/diraya.ts`: re-check against the Diraya code if Diraya changed since it was written
 - `profile.ts`: real GitHub URL; `public/resume.pdf` must exist
 - Hosting: SPA rewrite (every URL serves `index.html`)
 
 ## Decisions still open
 
-- Deep dive sections still to build: Database, Key decisions, Challenges, What I'd do differently
+- Deep dive sections still to build: Authentication, Key decisions, Challenges, What I'd do differently
 - Whether the footer also gets a second photo of him, or keeps the mountain and quote

@@ -7,7 +7,7 @@ type PointListProps = {
   columns?: boolean; // two side by side when the surrounding @container is wide enough
 };
 
-// A list of titled points: the backend layers, the frontend layers, the side notes.
+// A list of titled points, shared by every deep-dive section: layers, notes, decisions...
 // Numbered = an <ol>, because the order means something (routes come before controllers).
 function PointList({ points, numbered = false, columns = false }: PointListProps) {
   const List = numbered ? "ol" : "ul";

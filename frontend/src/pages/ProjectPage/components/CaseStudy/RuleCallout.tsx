@@ -4,7 +4,7 @@ type RuleCalloutProps = {
   rule: string;
 };
 
-// The one principle behind the whole architecture, highlighted in amber.
+// The one principle behind a section (e.g. the architecture rule), highlighted in amber.
 // It's the sentence an interviewer should remember, so it's the only warm-colored block.
 function RuleCallout({ rule }: RuleCalloutProps) {
   return (

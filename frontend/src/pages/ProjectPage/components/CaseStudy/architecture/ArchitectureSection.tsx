@@ -1,14 +1,15 @@
 import type { Architecture } from "@/data/caseStudies/types";
 import CaseStudySection from "../CaseStudySection";
 import GroupFrame from "../GroupFrame";
+import PointList from "../PointList";
+import RuleCallout from "../RuleCallout";
 import SectionBlock from "../SectionBlock";
 import ArchitectureDiagram from "./ArchitectureDiagram";
-import PointList from "./PointList";
 import RequestFlow from "./RequestFlow";
-import RuleCallout from "./RuleCallout";
 
 type ArchitectureSectionProps = {
   architecture: Architecture;
+  number: number;
 };
 
 // "How is it put together?", read in this order:
@@ -19,12 +20,12 @@ type ArchitectureSectionProps = {
 //
 // The two-column parts use a container query on this section's own width (see the
 // @container below), for the same reason as the diagram: the sidebar shares the row.
-function ArchitectureSection({ architecture }: ArchitectureSectionProps) {
+function ArchitectureSection({ architecture, number }: ArchitectureSectionProps) {
   const { summary, diagram, backendLayers, rule, notes, frontendLayers, requestFlow } =
     architecture;
 
   return (
-    <CaseStudySection id="architecture" title="Architecture" summary={summary}>
+    <CaseStudySection id="architecture" number={number} title="Architecture" summary={summary}>
       <ArchitectureDiagram diagram={diagram} />
 
       {/* Each frame is one part of the system: the backend (its layers + the rule behind them)

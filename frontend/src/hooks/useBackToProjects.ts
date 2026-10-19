@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 // What the project page's X does. Two cases:
 //
@@ -9,14 +9,19 @@ import { useLocation, useNavigate } from "react-router";
 //    this site to go back to, and history.back() would leave the site. So instead,
 //    open the portfolio at the projects section.
 //
-// How we tell them apart: the router gives the very first page of a visit the key "default".
+// How we tell them apart: the router keeps a position counter in history.state.idx.
+// It's 0 on the first page of the visit, goes up by 1 with every new page, and stays the
+// same on a "replace" (like switching deep-dive sections, which rewrites ?section= in place).
+// So idx > 0 means "there's a page of this site behind us".
+//
+// (Not location.key: a replace gives the page a new key, so after switching sections on a
+// directly opened link, the key would wrongly say "came from this site".)
 export function useBackToProjects() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const cameFromThisSite = location.key !== "default";
 
   return () => {
-    if (cameFromThisSite) navigate(-1);
+    const position = (window.history.state as { idx?: number } | null)?.idx ?? 0;
+    if (position > 0) navigate(-1);
     else navigate("/#projects");
   };
 }

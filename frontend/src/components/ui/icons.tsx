@@ -23,6 +23,15 @@ export function ArrowRightIcon({ className = "size-4" }: IconProps) {
   );
 }
 
+export function ArrowLeftIcon({ className = "size-4" }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <path d="M19 12H5" />
+      <path d="m11 6-6 6 6 6" />
+    </svg>
+  );
+}
+
 export function DownloadIcon({ className = "size-4" }: IconProps) {
   return (
     <svg {...base} className={className}>
@@ -181,6 +190,15 @@ export function BranchIcon({ className = "size-4" }: IconProps) {
       <circle cx="18" cy="8" r="2" />
       <path d="M6 7v10" />
       <path d="M18 10c0 4-6 3-12 7" />
+    </svg>
+  );
+}
+
+export function LockIcon({ className = "size-4" }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <rect x="4" y="11" width="16" height="10" rx="2" />
+      <path d="M8 11V7a4 4 0 0 1 8 0v4" />
     </svg>
   );
 }
