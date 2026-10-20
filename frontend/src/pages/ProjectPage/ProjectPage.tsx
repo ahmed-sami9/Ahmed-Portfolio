@@ -19,7 +19,12 @@ function ProjectPage() {
       {/* key: if you go from one project straight to another, the panel starts fresh
           (first screenshot, focus on the new title) instead of keeping the old state */}
       <ProjectPanel key={project.slug} project={project} number={index + 1} />
-      {project.caseStudy && <CaseStudy key={`${project.slug}-details`} caseStudy={project.caseStudy} />}
+      {project.caseStudy && (
+        <CaseStudy
+          key={`${project.slug}-details`}
+          caseStudy={project.caseStudy}
+        />
+      )}
     </main>
   );
 }

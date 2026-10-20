@@ -2,6 +2,7 @@ import { useMemo, useRef } from "react";
 import type { CaseStudy as CaseStudyData } from "@/data/caseStudies/types";
 import PanelCorners from "../PanelCorners";
 import ArchitectureSection from "./architecture/ArchitectureSection";
+import AuthenticationSection from "./authentication/AuthenticationSection";
 import CaseStudyNav from "./CaseStudyNav";
 import { CASE_STUDY_ID, getCaseStudySections } from "./caseStudySections";
 import DatabaseSection from "./database/DatabaseSection";
@@ -89,6 +90,9 @@ function CaseStudy({ caseStudy }: CaseStudyProps) {
             )}
             {activeId === "database" && caseStudy.database && (
               <DatabaseSection database={caseStudy.database} number={number} />
+            )}
+            {activeId === "authentication" && caseStudy.authentication && (
+              <AuthenticationSection authentication={caseStudy.authentication} number={number} />
             )}
 
             <SectionPager sections={sections} activeIndex={activeIndex} onSelect={openFromPager} />

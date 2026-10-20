@@ -1,10 +1,10 @@
 import type { Database } from "@/data/caseStudies/types";
 import CaseStudySection from "../CaseStudySection";
+import CodeShowcase from "../CodeShowcase";
 import GroupFrame from "../GroupFrame";
 import PointList from "../PointList";
 import RuleCallout from "../RuleCallout";
 import SectionBlock from "../SectionBlock";
-import QueryShowcase from "./QueryShowcase";
 import RuleList from "./RuleList";
 import SchemaDiagram from "./SchemaDiagram";
 
@@ -38,19 +38,19 @@ function DatabaseSection({ database, number }: DatabaseSectionProps) {
 
       <div className="@container mt-12">
         <SectionBlock title="Design decisions">
-          <PointList points={decisions} columns />
+          <PointList points={decisions} columns={2} />
         </SectionBlock>
       </div>
 
       <GroupFrame className="mt-12">
         <SectionBlock title="The query" subtitle={query.question}>
-          <QueryShowcase query={query} />
+          <CodeShowcase sample={query} />
         </SectionBlock>
       </GroupFrame>
 
       <div className="@container mt-12">
         <SectionBlock title="Safety with raw SQL">
-          <PointList points={safety} columns />
+          <PointList points={safety} columns={2} />
         </SectionBlock>
       </div>
     </CaseStudySection>

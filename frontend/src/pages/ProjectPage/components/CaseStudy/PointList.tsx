@@ -4,16 +4,24 @@ import type { Point } from "@/data/caseStudies/types";
 type PointListProps = {
   points: Point[];
   numbered?: boolean; // layers have an order (01, 02...); notes don't
-  columns?: boolean; // two side by side when the surrounding @container is wide enough
+  // side by side when the surrounding @container is wide enough. 3 has its own, wider breakpoint
+  // and skips the 2-column step: three items in two columns would leave one alone on a row.
+  columns?: 1 | 2 | 3;
+};
+
+const LAYOUT = {
+  1: "space-y-3",
+  2: "grid gap-3 @3xl:grid-cols-2",
+  3: "grid gap-3 @min-[50rem]:grid-cols-3",
 };
 
 // A list of titled points, shared by every deep-dive section: layers, notes, decisions...
 // Numbered = an <ol>, because the order means something (routes come before controllers).
-function PointList({ points, numbered = false, columns = false }: PointListProps) {
+function PointList({ points, numbered = false, columns = 1 }: PointListProps) {
   const List = numbered ? "ol" : "ul";
 
   return (
-    <List className={columns ? "grid gap-3 @3xl:grid-cols-2" : "space-y-3"}>
+    <List className={LAYOUT[columns]}>
       {points.map((point, i) => (
         <li
           key={point.title}

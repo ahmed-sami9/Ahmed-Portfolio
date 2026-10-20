@@ -25,7 +25,7 @@ export function getCaseStudySections(caseStudy: CaseStudy): CaseStudySectionInfo
   return [
     { id: "architecture", label: "Architecture", Icon: LayersIcon, ready: !!caseStudy.architecture },
     { id: "database", label: "Database", Icon: DatabaseIcon, ready: !!caseStudy.database },
-    { id: "authentication", label: "Authentication", Icon: LockIcon, ready: false },
+    { id: "authentication", label: "Authentication", Icon: LockIcon, ready: !!caseStudy.authentication },
     { id: "key-decisions", label: "Key decisions", Icon: LightbulbIcon, ready: false },
     { id: "challenges", label: "Challenges", Icon: FlagIcon, ready: false },
     { id: "what-id-do-differently", label: "What I’d do differently", Icon: RotateIcon, ready: false },

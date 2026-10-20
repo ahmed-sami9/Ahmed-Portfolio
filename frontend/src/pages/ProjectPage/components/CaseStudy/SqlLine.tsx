@@ -5,8 +5,9 @@ type SqlLineProps = {
 // The SQL words worth coloring. Not a full highlighter: just enough that the statement's
 // shape (INSERT ... ON CONFLICT ... DO UPDATE) jumps out.
 const KEYWORDS = new Set([
-  "AND", "AS", "BEGIN", "COMMIT", "CONFLICT", "CONSTRAINT", "DO", "EXCLUDED", "FROM", "INSERT",
-  "INTO", "JOIN", "ON", "RETURNING", "ROLLBACK", "SELECT", "SET", "UPDATE", "VALUES", "WHERE",
+  "AND", "AS", "BEGIN", "CASE", "COMMIT", "CONFLICT", "CONSTRAINT", "DO", "ELSE", "END",
+  "EXCLUDED", "FROM", "INSERT", "INTO", "IS", "JOIN", "NULL", "ON", "RETURNING", "ROLLBACK",
+  "SELECT", "SET", "THEN", "TRUE", "UPDATE", "VALUES", "WHEN", "WHERE",
 ]);
 
 // One line of SQL with light syntax coloring:

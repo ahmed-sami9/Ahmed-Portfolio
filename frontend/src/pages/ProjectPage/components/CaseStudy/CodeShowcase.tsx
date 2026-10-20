@@ -1,14 +1,15 @@
 import { useState } from "react";
 import TextWithCode from "@/components/ui/TextWithCode";
-import type { Database } from "@/data/caseStudies/types";
+import type { CodeSample } from "@/data/caseStudies/types";
 import LetterBadge from "./LetterBadge";
 import SqlLine from "./SqlLine";
 
-type QueryShowcaseProps = {
-  query: Database["query"];
+type CodeShowcaseProps = {
+  sample: CodeSample;
 };
 
-// A real query from the codebase, with lettered notes.
+// A real piece of code from the project, with lettered notes. Shared by every section that
+// shows code (the Database query, the Google linking query in Authentication).
 //
 // Letters sit in the code's left margin, on the first line of what they explain, and the same
 // letters lead the explanations. No floating bubbles pinned to pixel positions: those point at
@@ -22,23 +23,23 @@ type QueryShowcaseProps = {
 // as wide as the code (`auto`) and the notes take what's left, so the SQL never scrolls sideways
 // there, whatever the sidebar's width. Below that, notes go under the code, and on phones the
 // code scrolls inside its own window, never the page.
-function QueryShowcase({ query }: QueryShowcaseProps) {
+function CodeShowcase({ sample }: CodeShowcaseProps) {
   const [active, setActive] = useState<string | null>(null);
 
-  const lines = query.code.split("\n");
+  const lines = sample.code.split("\n");
   // line number → the note's letter: where badges go, and which lines belong to which note
-  const badgeOnLine = new Map(query.notes.map((note) => [note.lines[0], note.letter]));
+  const badgeOnLine = new Map(sample.notes.map((note) => [note.lines[0], note.letter]));
   const noteOfLine = new Map(
-    query.notes.flatMap((note) => note.lines.map((line) => [line, note.letter] as const)),
+    sample.notes.flatMap((note) => note.lines.map((line) => [line, note.letter] as const)),
   );
-  const activeLines = new Set(query.notes.find((note) => note.letter === active)?.lines ?? []);
+  const activeLines = new Set(sample.notes.find((note) => note.letter === active)?.lines ?? []);
 
   return (
     <div className="@container" onMouseLeave={() => setActive(null)}>
       <div className="grid gap-5 @min-[53rem]:grid-cols-[auto_minmax(0,1fr)] @min-[53rem]:items-start">
         <figure className="overflow-hidden rounded-xl border border-line bg-bg">
           <figcaption className="border-b border-line px-4 py-2.5 font-mono text-[11px] text-subtle">
-            {query.source}
+            {sample.source}
           </figcaption>
 
           <pre className="overflow-x-auto py-3 font-mono text-[12px] leading-[1.7] text-text/85">
@@ -80,7 +81,7 @@ function QueryShowcase({ query }: QueryShowcaseProps) {
 
         <div>
           <ol className="space-y-1">
-            {query.notes.map((note) => (
+            {sample.notes.map((note) => (
               <li
                 key={note.letter}
                 onMouseEnter={() => setActive(note.letter)}
@@ -110,4 +111,4 @@ function QueryShowcase({ query }: QueryShowcaseProps) {
   );
 }
 
-export default QueryShowcase;
+export default CodeShowcase;

@@ -304,4 +304,154 @@ export const dirayaCaseStudy: CaseStudy = {
       },
     ],
   },
+
+  // Every claim below is checked against Diraya's auth module (backend/src/modules/auth).
+  authentication: {
+    summary:
+      "Four ways to sign in, one kind of session. Passwords are hashed with argon2, sessions live on the server so they can be ended at any moment, and every emailed link is hashed, single-use and short-lived.",
+    flows: [
+      {
+        icon: "key",
+        title: "Password",
+        steps: [
+          "Email + password checked with `argon2`",
+          "Same error for a wrong email or a wrong password",
+          "An unverified email is only mentioned after a correct password",
+        ],
+        keyPractice: "Nothing reveals which emails exist",
+      },
+      {
+        icon: "user",
+        title: "Google",
+        steps: [
+          "The browser only gets a one-time code",
+          "The server exchanges it with its secret and checks the token was issued for Diraya",
+          "Matched by Google’s permanent ID; the email must be Google-verified",
+        ],
+        keyPractice: "Linking to an unverified account wipes its password",
+      },
+      {
+        icon: "mail",
+        title: "Sign up + verify",
+        steps: [
+          "The account is created, but not signed in",
+          "A link is emailed: 24 hours, single-use",
+          "Clicking it verifies the email and signs in",
+        ],
+        keyPractice: "Prove you own the inbox before you get a session",
+      },
+      {
+        icon: "rotate",
+        title: "Password reset",
+        steps: [
+          "The same answer whether the account exists or not",
+          "A 30-minute single-use link; only the newest one works",
+          "One transaction: new password + every session ended; then the owner is emailed",
+        ],
+        keyPractice: "A reset signs everyone out",
+      },
+    ],
+    session: {
+      title: "Session",
+      subtitle: "Every way in ends here, and it’s checked on every request",
+      facts: [
+        "httpOnly cookie",
+        "3 h idle · 12 h max · 7 days with “remember me”",
+        "ended at logout or password reset",
+      ],
+    },
+    threats: [
+      {
+        attack: "steals the database",
+        defense: "Passwords are slow-hashed; emailed links are stored only as hashes",
+        details: ["argon2", "sha256"],
+      },
+      {
+        attack: "injects a script into the page",
+        defense: "The session cookie can’t be read by JavaScript",
+        details: ["httpOnly"],
+      },
+      {
+        attack: "submits a form from another site",
+        defense: "Every write must come from Diraya’s exact address",
+        details: ["Origin check", "SameSite=Lax"],
+      },
+      {
+        attack: "guesses passwords",
+        defense: "20 failed attempts per 15 minutes, per visitor",
+        details: ["rate limit"],
+      },
+      {
+        attack: "probes for registered emails",
+        defense: "Login and reset answer the same either way",
+        details: ["same response"],
+      },
+      {
+        attack: "keeps using a stolen session",
+        defense: "Sessions live on the server and can be ended instantly",
+        details: ["revocable"],
+      },
+      {
+        attack: "forges or edits the token",
+        defense: "The signature, algorithm, issuer and audience are all checked",
+        details: ["HS256 pinned"],
+      },
+      {
+        attack: "floods someone’s inbox",
+        defense: "One email per minute per account",
+        details: ["cooldown"],
+      },
+    ],
+    decisions: [
+      {
+        title: "A database check on every request",
+        text: "It’s the price of being able to end a session instantly. A pure JWT can’t be revoked until it expires.",
+      },
+      {
+        title: "A cookie instead of `localStorage`",
+        text: "Scripts can’t steal it, but a cookie needs the CSRF Origin check, so both are there.",
+      },
+      {
+        title: "One limiter per action, not one global one",
+        text: "Login, sign-up, reset emails and link checks each get their own budget, so blocking one doesn’t block the others.",
+      },
+    ],
+    code: {
+      question: "Signing in with Google to an email that already has an account: who wins?",
+      source: "auth.repository.ts · createOrLinkGoogleTeacher",
+      code: [
+        "INSERT INTO teachers (full_name, email, google_id, email_verified)",
+        "VALUES ($1, $2, $3, TRUE)",
+        "ON CONFLICT (email) DO UPDATE",
+        "  SET google_id = EXCLUDED.google_id,",
+        "      email_verified = TRUE,",
+        "      password_hash = CASE",
+        "        WHEN teachers.email_verified THEN teachers.password_hash",
+        "        ELSE NULL",
+        "      END",
+        "  WHERE teachers.google_id IS NULL",
+        "RETURNING id, full_name, email;",
+      ].join("\n"),
+      notes: [
+        {
+          letter: "A",
+          lines: [3, 4, 5],
+          title: "One email, one account",
+          text: "An email that already has an account gets Google linked to it, instead of a second account.",
+        },
+        {
+          letter: "B",
+          lines: [6, 7, 8, 9],
+          title: "An unverified password is wiped",
+          text: "If the account was never verified, a stranger may have signed up with this email and set that password. Google proves who owns it, so the password goes. A verified owner keeps theirs.",
+        },
+        {
+          letter: "C",
+          lines: [10, 11],
+          title: "Never re-linked",
+          text: "An account already tied to another Google ID matches nothing, so no row comes back and the teacher sees “already linked to a different Google account”.",
+        },
+      ],
+    },
+  },
 };

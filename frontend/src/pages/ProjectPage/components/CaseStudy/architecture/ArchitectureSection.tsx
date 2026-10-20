@@ -48,7 +48,7 @@ function ArchitectureSection({ architecture, number }: ArchitectureSectionProps)
 
         <GroupFrame>
           <SectionBlock title="Frontend layers">
-            <PointList points={frontendLayers} numbered columns />
+            <PointList points={frontendLayers} numbered columns={2} />
           </SectionBlock>
         </GroupFrame>
       </div>

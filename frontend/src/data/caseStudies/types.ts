@@ -101,6 +101,14 @@ export type SchemaChain = {
   tables: string[];
 };
 
+// A real piece of code with lettered notes (the Database query, the Google linking query...).
+export type CodeSample = {
+  question: string; // what the code answers, shown above it
+  source: string; // where the real code lives, e.g. "attendance.repository.ts"
+  code: string;
+  notes: QueryNote[];
+};
+
 export type Database = {
   summary: string;
   tables: SchemaTable[];
@@ -109,17 +117,42 @@ export type Database = {
   rules: DatabaseRule[];
   rulesCallout: string;
   decisions: Point[];
-  query: {
-    question: string;
-    source: string; // where the real code lives, e.g. "attendance.repository.ts"
-    code: string;
-    notes: QueryNote[];
-  };
+  query: CodeSample;
   safety: Point[];
+};
+
+// One way of getting a session (password, Google, sign-up link, reset link): three short steps
+// and the one practice that matters most in it.
+export type AuthFlow = {
+  icon: "key" | "user" | "mail" | "rotate"; // a name, not a component: data stays plain data
+  title: string;
+  steps: string[];
+  keyPractice: string;
+};
+
+// "If someone tries to…" → what stops it. `details` are the technical names, shown as chips.
+export type Threat = {
+  attack: string;
+  defense: string;
+  details: string[];
+};
+
+export type Authentication = {
+  summary: string;
+  flows: AuthFlow[];
+  session: {
+    title: string;
+    subtitle: string;
+    facts: string[]; // short mono facts: the cookie, the timeouts, when it ends
+  };
+  threats: Threat[];
+  decisions: Point[];
+  code: CodeSample;
 };
 
 export type CaseStudy = {
   architecture?: Architecture;
   database?: Database;
-  // authentication, decisions, challenges, lessons: added as each one is built
+  authentication?: Authentication;
+  // decisions, challenges, lessons: added as each one is built
 };
