@@ -3,7 +3,7 @@ import { useInView } from "@/hooks/useInView";
 
 type TerminalLineProps = {
   text: string;
-  href?: string; // when given, the whole line is a link that opens in a new tab
+  href?: string; // makes the whole line a link: "#id" scrolls on this page, anything else opens a new tab
 };
 
 // The site's signature: a terminal prompt that types itself out once, then a cursor keeps blinking.
@@ -15,6 +15,7 @@ type TerminalLineProps = {
 function TerminalLine({ text, href }: TerminalLineProps) {
   const { ref, inView } = useInView<HTMLParagraphElement>();
   const style = { "--chars": text.length } as CSSProperties;
+  const isExternal = href !== undefined && !href.startsWith("#");
 
   const typedText = (
     <span
@@ -38,12 +39,11 @@ function TerminalLine({ text, href }: TerminalLineProps) {
       {href ? (
         <a
           href={href}
-          target="_blank"
-          rel="noopener noreferrer"
+          {...(isExternal && { target: "_blank", rel: "noopener noreferrer" })}
           className="transition-colors hover:text-accent"
         >
           {typedText}
-          <span className="sr-only"> (opens in a new tab)</span>
+          {isExternal && <span className="sr-only"> (opens in a new tab)</span>}
         </a>
       ) : (
         typedText

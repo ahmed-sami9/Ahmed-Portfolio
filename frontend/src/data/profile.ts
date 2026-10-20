@@ -8,7 +8,7 @@ export const profile = {
   tagline:
     "I build full-stack web applications with the MERN stack, and I learn whatever a problem needs beyond it. I make sure what I ship is reliable today and still easy to change a year from now.",
   location: "Based in Egypt",
-  terminalLine: "open to remote roles",
+  terminalLine: "open to new roles",
   photo: {
     src: "/personal-photo.webp",
     alt: "Portrait of Ahmed Elgaml",
