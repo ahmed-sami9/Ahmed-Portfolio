@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import AccentCorner from "@/components/ui/AccentCorner";
 
 type BlockFrameProps = {
   title: string;
@@ -19,10 +20,7 @@ type BlockFrameProps = {
 function BlockFrame({ title, subtitle, className = "", children }: BlockFrameProps) {
   return (
     <section className={`relative rounded-2xl border border-line bg-text/[0.015] p-3.5 sm:p-5 ${className}`}>
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -top-px -left-px h-7 w-14 rounded-tl-2xl border-t-2 border-l-2 border-accent/80"
-      />
+      <AccentCorner />
       <h4 className="text-sm font-medium text-text">{title}</h4>
       {subtitle && <p className="mt-1 text-sm text-subtle">{subtitle}</p>}
       <div className="@container mt-4">{children}</div>

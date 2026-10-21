@@ -36,7 +36,8 @@ function Navbar() {
         }`}
       />
 
-      <div className="mx-auto flex h-20 w-full max-w-page items-center justify-between px-4 sm:px-6 lg:px-8">
+      {/* md+: three columns (1fr auto 1fr), so the links stay centered whether or not the resume link is shown */}
+      <div className="mx-auto flex h-20 w-full max-w-page items-center justify-between px-4 sm:px-6 md:grid md:grid-cols-[1fr_auto_1fr] lg:px-8">
         {/*
           Links are router <Link>s to "/#section", not plain "#section" anchors, so they also work
           from a project page: there they go back to the portfolio, then scroll to the section.
@@ -46,7 +47,7 @@ function Navbar() {
           to="/#home"
           aria-label={`${profile.name}, back to top`}
           onClick={() => setMenuOpen(false)}
-          className="font-display text-2xl tracking-tight text-text"
+          className="justify-self-start font-display text-2xl tracking-tight text-text"
         >
           {profile.initials}
           <span className="text-accent">.</span>
@@ -81,15 +82,17 @@ function Navbar() {
           </ul>
         </nav>
 
-        {/* Desktop resume link (on mobile it lives inside the menu) */}
-        <a
-          href={profile.links.resume}
-          download
-          className="hidden items-center gap-2 text-sm text-muted transition-colors hover:text-text md:inline-flex"
-        >
-          <DownloadIcon />
-          Resume
-        </a>
+        {/* Desktop resume link (on mobile it lives inside the menu). Hidden until the file exists. */}
+        {profile.links.resume && (
+          <a
+            href={profile.links.resume}
+            download
+            className="hidden items-center gap-2 justify-self-end text-sm text-muted transition-colors hover:text-text md:inline-flex"
+          >
+            <DownloadIcon />
+            Resume
+          </a>
+        )}
 
         <MobileMenu open={menuOpen} onOpenChange={setMenuOpen} activeId={activeId} />
       </div>

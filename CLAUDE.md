@@ -30,14 +30,14 @@ Its job is to get him hired. It is a feeling and a shape, not a complex app.
 
 ```
 src/
-  data/                     all content (profile, navigation, projects)
+  data/                     all content (profile, navigation, projects, about, contact, footer)
     caseStudies/            each project's technical deep dive (types.ts + one file per project)
   components/               shared across the whole site
-    layout/                 RootLayout (shared frame of every page), Navbar, MobileMenu, Background, Section
+    layout/                 RootLayout (shared frame of every page), Navbar, MobileMenu, Footer, Background, Section
     project/                pieces used by both the project cards and the project page (tags, status badge)
-    ui/                     icons, SectionHeading, TerminalLine and other small reusable pieces
+    ui/                     icons, SectionHeading, TerminalLine, AccentCorner and other small reusable pieces
   utils/                    small plain functions (no React), e.g. scrollToSection
-  hooks/                    shared React hooks (scroll, active section, in-view, reduced motion, page title, back to projects)
+  hooks/                    shared React hooks (scroll, active section, in-view, reduced motion, page title, back to projects, now)
   pages/
     ProjectPage/            /projects/:slug: the project panel (gallery, intro, features + problem),
                             then CaseStudy/ (the technical deep dive): shared pieces at its root
@@ -104,18 +104,21 @@ Be direct. Say when there is a better way. Do not just agree.
 - Known gap, for "What I'd do differently" unless fixed in Diraya: sign-up answers 409 EMAIL_TAKEN for a registered verified email, while login and reset hide whether an email exists.
 - Content of the deep dive is checked against the Diraya codebase (C:\dev\Diraya). No claim that isn't in the code (no Payments table yet, no student interface yet).
 - About section (built; text lives in `src/data/about.ts`): serif lead "Telecom engineer by degree, full-stack developer by choice." + story beside a calm photo in its own matted frame (Unsplash forest lake, sky cropped by zooming from the bottom; decorative, alt=""); "How I work" as a framed card (3 numbered principles with dividers), then three bordered cards (How I learn, Toolbox, Looking for) with no numbers: every block framed so each starts and ends visibly; the belief line as the closing quote; then a divider + `$ let's talk` terminal line to #contact (the same ending as Projects). No fact strip: every fact was already said elsewhere. Amber only on the eyebrow and the belief bar; no highlighted words. Toolbox lists only what can be defended in an interview ("Familiar" hidden while empty). No age, no second portrait, no skill bars, no religion on the page.
+- Contact section (built; text in `src/data/contact.ts`): "Let’s talk." answers About's `$ let's talk`. Email is the main action: one framed card with the amber corner (AccentCorner), the full address in mono, a solid amber "Write to me" (mailto) + a Copy button (status announced via role="status"), "I reply within a day", and Cairo's live local time with its offset computed by Intl (Egypt has DST, so never hard-code it). Beside it (lg) / under it: one row per other link (CV, LinkedIn, GitHub, WhatsApp via wa.me/20…), muted icons, no brand colors. A link with `href: null` is hidden, never shown dead. No photo, no section number, no contact form, no phone number shown (WhatsApp is text-only by intent). No closing terminal line: the footer ends the page.
+- Footer (in RootLayout, so on every page): AE. + © year + name · "Built with React, TypeScript & Tailwind · Source on GitHub" (this repo) · "Back to top" button (scrolls, then focuses the navbar logo). No mountain, no quote, no second photo: About already has the photo and the quote.
+- Resume: `profile.links.resume` is null until `public/resume.pdf` exists; while null, the navbar, mobile menu and Contact all hide their resume links.
 
 ## Before launch (placeholders that must not go public)
 
 - "Live demo" on the project page is a do-nothing button until `links.demo` is set in `data/projects.ts`
 - "Explore the technical details" scrolls to `#technical-details`, which doesn't exist until the deep dive is built
-- `data/projects.ts`: Diraya repeated 4 times, placeholder screenshots, GitHub URL `your-username`, Diraya's problem text (check it's in Ahmed's words)
+- `data/projects.ts`: Diraya repeated 4 times, placeholder screenshots, Diraya's problem text (check it's in Ahmed's words). The Diraya repo (github.com/ahmed-sami9/Diraya) must be public.
 - `data/caseStudies/diraya.ts`: re-check against the Diraya code if Diraya changed since it was written
-- `profile.ts`: real GitHub URL; `public/resume.pdf` must exist
+- Resume: add `public/resume.pdf`, then set `profile.links.resume` to "/resume.pdf" (all resume links appear by themselves)
+- Name consistency: the site says Ahmed Elgaml; LinkedIn's shown name and custom URL should match
 - Hosting: SPA rewrite (every URL serves `index.html`)
 - About TODOs: full-size photo file, English level after the EF SET.
 
 ## Decisions still open
 
 - Deep dive sections still to build: Key decisions, Challenges, What I'd do differently
-- Whether the footer also gets a second photo of him, or keeps the mountain and quote

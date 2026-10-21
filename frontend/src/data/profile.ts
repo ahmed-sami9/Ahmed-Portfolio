@@ -16,7 +16,9 @@ export const profile = {
     height: 1000,
   },
   links: {
-    github: "https://github.com/your-username", // TODO: your real GitHub URL
-    resume: "/resume.pdf", // TODO: add resume.pdf to /public
+    github: "https://github.com/ahmed-sami9",
+    // null hides every resume link (navbar, menu, Contact). Add resume.pdf to /public, then set "/resume.pdf".
+    resume: null as string | null,
+    source: "https://github.com/ahmed-sami9/Ahmed-Portfolio", // this site's own code, linked from the footer
   },
 } as const;

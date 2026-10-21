@@ -1,9 +1,10 @@
 import { Outlet, ScrollRestoration } from "react-router";
 import Background from "./Background";
+import Footer from "./Footer";
 import InstantPageScroll from "./InstantPageScroll";
 import Navbar from "./Navbar";
 
-// The frame every page shares: background, navbar, then the current page (<Outlet />).
+// The frame every page shares: background, navbar, the current page (<Outlet />), then the footer.
 //
 // <ScrollRestoration /> is what makes "back" feel right:
 //   - opening a new page starts it at the top
@@ -17,6 +18,7 @@ function RootLayout() {
       <Background />
       <Navbar />
       <Outlet />
+      <Footer />
       <InstantPageScroll />
       <ScrollRestoration />
     </>

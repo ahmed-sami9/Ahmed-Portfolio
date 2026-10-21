@@ -87,14 +87,16 @@ function MobileMenu({ open, onOpenChange, activeId }: MobileMenuProps) {
             })}
           </ul>
 
-          <a
-            href={profile.links.resume}
-            download
-            className="mt-8 inline-flex items-center gap-2 text-sm text-muted"
-          >
-            <DownloadIcon />
-            Download resume
-          </a>
+          {profile.links.resume && (
+            <a
+              href={profile.links.resume}
+              download
+              className="mt-8 inline-flex items-center gap-2 text-sm text-muted"
+            >
+              <DownloadIcon />
+              Download resume
+            </a>
+          )}
         </nav>
       </div>
     </div>

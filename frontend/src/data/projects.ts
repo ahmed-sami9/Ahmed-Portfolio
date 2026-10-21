@@ -90,7 +90,7 @@ const diraya: Project = {
   links: {
     // demo: "https://...",   (once it's deployed)
     // demoNote: "You get your own sandbox account with sample data. No sign-up.",
-    repo: "https://github.com/your-username/diraya", // TODO: real repo URL
+    repo: "https://github.com/ahmed-sami9/Diraya", // must be public before launch
   },
   caseStudy: dirayaCaseStudy,
 };
