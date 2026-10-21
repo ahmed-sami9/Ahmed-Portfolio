@@ -13,10 +13,12 @@ function Hero() {
       aria-labelledby="hero-title"
       // Phones: one column, left-aligned.
       // Tablets (md): two columns, as tall as the content.
-      // Laptops/desktops (lg): two columns that fill the screen.
-      //   lg:py-8 only shows when the content is taller than the screen (short laptops);
-      //   otherwise min-h + centering decide the spacing. Kept small so the photo can stay big.
-      className="mx-auto grid w-full max-w-page items-center gap-14 px-4 pt-10 pb-20 sm:px-6 sm:pt-16 md:grid-cols-[1.15fr_0.85fr] md:gap-12 md:pb-24 lg:min-h-[calc(100svh-5rem)] lg:gap-16 lg:px-8 lg:py-8"
+      // Laptops/desktops (lg): text column + a photo column exactly as wide as the photo,
+      //   so there's no dead space beside it pulling the two sides apart.
+      //   min-h stops 11rem short of the screen bottom (5rem navbar + 11rem): on tall screens the top of
+      //   "My projects" shows below the fold. On short laptops the photo is taller than that, and wins.
+      //   lg:pt-14 lg:pb-8 keep the photo clear of the navbar when the content fills that height.
+      className="mx-auto grid w-full max-w-page items-center gap-14 px-4 pt-10 pb-20 sm:px-6 sm:pt-16 md:grid-cols-[1.15fr_0.85fr] md:gap-12 md:pb-24 lg:min-h-[calc(100svh-16rem)] lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-20 lg:px-8 lg:pt-14 lg:pb-8"
     >
       {/* lg:pb-16 lifts only the text column: it's vertically centered in its grid cell,
           so extra bottom padding moves its content up by half that amount. The photo stays put. */}
@@ -32,7 +34,7 @@ function Hero() {
           {profile.name}
         </h1>
 
-        <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+        <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg xl:max-w-2xl">
           {profile.tagline}
         </p>
 
@@ -56,8 +58,8 @@ function Hero() {
           </a>
         </div>
 
-        {/* Tablet/desktop position: under the buttons */}
-        <div className="mt-12 hidden md:block">
+        {/* Tablet/desktop position: close under the buttons, so it reads as part of the call to action */}
+        <div className="mt-8 hidden md:block">
           <TerminalLine text={profile.terminalLine} />
         </div>
       </div>
