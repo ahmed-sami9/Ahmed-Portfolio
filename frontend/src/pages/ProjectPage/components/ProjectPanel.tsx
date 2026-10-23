@@ -1,9 +1,9 @@
 import ProjectStatusBadge from "@/components/project/ProjectStatusBadge";
+import FrameCorners from "@/components/ui/FrameCorners";
 import type { Project } from "@/data/projects";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import CloseButton from "./CloseButton";
 import ExploreDetailsButton from "./ExploreDetailsButton";
-import PanelCorners from "./PanelCorners";
 import ProjectGallery from "./ProjectGallery";
 import ProjectIntro from "./ProjectIntro";
 import ProjectOverview from "./ProjectOverview";
@@ -27,7 +27,7 @@ function ProjectPanel({ project, number }: ProjectPanelProps) {
       aria-labelledby="project-title"
       className="relative rounded-2xl border border-line bg-text/[0.02] p-5 sm:p-7 lg:p-8 short:py-6"
     >
-      <PanelCorners />
+      <FrameCorners />
 
       {/* Header row: which project and its status on the left, close on the right.
           The status sits here, with the facts about the project, not in the title area. */}

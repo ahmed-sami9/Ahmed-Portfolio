@@ -23,6 +23,7 @@ function ProjectPage() {
         <CaseStudy
           key={`${project.slug}-details`}
           caseStudy={project.caseStudy}
+          repoUrl={project.links.repo}
         />
       )}
     </main>

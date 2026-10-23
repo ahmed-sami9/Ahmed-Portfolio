@@ -150,9 +150,35 @@ export type Authentication = {
   code: CodeSample;
 };
 
+// ----------------------------- Key decisions ------------------------------
+
+// Where a decision lives in the code. `path` is from the repo root; the page turns it into a
+// GitHub link, so the claim can be checked in one click.
+export type CodeRef = {
+  label: string; // short, e.g. "payments.repository.ts"
+  path: string; // e.g. "backend/src/modules/payments/payments.repository.ts"
+};
+
+// One decision, read like a short decision record: the problem, the obvious way and why not,
+// what was built instead, what it cost, and where to see it.
+export type KeyDecision = {
+  question: string;
+  obvious: { option: string; why: string }; // the alternative most people would reach for
+  chosen: { option: string; how: string[] };
+  cost: string; // the trade-off, said honestly
+  code: CodeRef[];
+};
+
+export type KeyDecisions = {
+  summary: string;
+  decisions: KeyDecision[];
+  principle: string; // the thread through all of them, highlighted at the end
+};
+
 export type CaseStudy = {
   architecture?: Architecture;
   database?: Database;
   authentication?: Authentication;
-  // decisions, challenges, lessons: added as each one is built
+  keyDecisions?: KeyDecisions;
+  // challenges, lessons: added as each one is built
 };

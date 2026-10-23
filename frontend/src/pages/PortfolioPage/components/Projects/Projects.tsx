@@ -16,8 +16,8 @@ function Projects() {
         description={description}
       />
 
-      {/* Wide, short cards: one per row, two side by side from laptop width */}
-      <ul aria-label="Projects" className="mt-14 grid gap-5 lg:mt-16 lg:grid-cols-2">
+      {/* One project per row at every width: a few strong projects, each given its own space */}
+      <ul aria-label="Projects" className="mt-14 grid gap-6 lg:mt-16 lg:gap-8">
         {projects.map((project, index) => (
           <ProjectCard key={project.slug} project={project} number={index + 1} />
         ))}

@@ -25,6 +25,13 @@ Its job is to get him hired. It is a feeling and a shape, not a complex app.
 - Before handing over, verify: it builds (`npm run build`), lints, has no horizontal scroll, and actually looks right at desktop and phone widths.
 - Never commit. Ahmed reviews the diff and commits himself.
 - Old files that need deleting get listed for Ahmed to remove.
+- A new file with new Tailwind classes may not show up until `npm run dev` is restarted (+ hard refresh): Tailwind only generates classes it has scanned. Say so whenever new files are added.
+- Keep each file's existing line endings (some, e.g. `Projects.tsx`, are CRLF), so git diffs show only real changes.
+- Before suggesting `git restore`, check what's uncommitted: a restore can wipe unrelated uncommitted work in the same file.
+- Compare before vs after (same screen sizes) for layout changes, not just "it works": a change can be correct and still barely visible.
+- Test the project cards with a bright fake screenshot until real Diraya screenshots exist (the real app is light/blue).
+- Every claim about Diraya must match its code (C:\dev\Diraya, read-only: never change anything there).
+- Keep sessions short: one task per chat. This file is the shared memory between chats, so record new decisions here.
 
 ## Structure (frontend/src)
 
@@ -35,14 +42,14 @@ src/
   components/               shared across the whole site
     layout/                 RootLayout (shared frame of every page), Navbar, MobileMenu, Footer, Background, Section
     project/                pieces used by both the project cards and the project page (tags, status badge)
-    ui/                     icons, SectionHeading, TerminalLine, AccentCorner and other small reusable pieces
+    ui/                     icons, SectionHeading, TerminalLine, AccentCorner, FrameCorners and other small reusable pieces
   utils/                    small plain functions (no React), e.g. scrollToSection
   hooks/                    shared React hooks (scroll, active section, in-view, reduced motion, page title, back to projects, now)
   pages/
     ProjectPage/            /projects/:slug: the project panel (gallery, intro, features + problem),
                             then CaseStudy/ (the technical deep dive): shared pieces at its root
                             (CaseStudySection, GroupFrame, PointList, RuleCallout...), one folder
-                            per section (architecture/, database/)
+                            per section (architecture/, database/, authentication/, decisions/)
     NotFoundPage/           any unknown URL
     PortfolioPage/
       PortfolioPage.tsx     composes the sections in reading order
@@ -102,8 +109,10 @@ Be direct. Say when there is a better way. Do not just agree.
 - Authentication section (built, every claim checked against Diraya's backend/src/modules/auth): four blocks, each in a BlockFrame (border + ONE amber top-left corner; the outer Technical details box keeps four corners). 1) "Four ways in, one session": Password, Google, Sign up + verify, Password reset as wide cards in a 2x2 grid from 36rem (4 in a row made them narrow and tall), stacked below; 3 steps with plain muted numbers + one bold key practice. Soft amber lines run from each card into a trunk down the middle gap, then into the one Session box (strongest amber: border + 4% amber wash; httpOnly cookie, 3 h idle / 12 h max / 7 days remember me, ended at logout or reset). Amber on the lines is allowed because they are the session's paths. 2) "If someone tries to…" threat → defense table (a real <table> from 42rem, stacked items below), technical names as chips. 3) Design decisions (3 columns). 4) The Google linking query (createOrLinkGoogleTeacher) with lettered notes; key story: linking to an unverified account wipes its password (blocks account pre-hijacking).
 - Shared across sections: CodeShowcase (code + lettered notes + hover ranges), SqlLine, LetterBadge, PointList (`columns` 1 | 2 | 3), BlockFrame, GroupFrame.
 - Known gap, for "What I'd do differently" unless fixed in Diraya: sign-up answers 409 EMAIL_TAKEN for a registered verified email, while login and reset hide whether an email exists.
-- Content of the deep dive is checked against the Diraya codebase (C:\dev\Diraya). No claim that isn't in the code (no Payments table yet, no student interface yet).
+- Content of the deep dive is checked against the Diraya codebase (C:\dev\Diraya). No claim that isn't in the code (no student interface yet). Payments now exist in Diraya (payments, payment_months, student_months; checked 23 Oct 2026), but the Database section's schema diagram doesn't show them yet.
+- Key decisions section (built, checked against Diraya's payments + demo modules, migrations and tests): 4 decision records, each in a BlockFrame titled with the question. Inside: "The obvious way" (dashed, muted, option struck through, top-aligned so it stays small) beside "What I built" (solid, faint green wash, green checks), side by side from @2xl; then a <dl>: "The cost" + "In the code" (mono chips that open the real file on GitHub via `repoFileUrl` = `<repo>/blob/HEAD/<path>`; plain text when the project has no repo, never a dead link). Ends with a RuleCallout: "make the wrong outcome impossible, not just unlikely". Decisions: payments as a ledger (split, void never delete, status computed), request_id + row lock against double payments, tests on a real test database (not mocks), a fresh demo teacher per visit. No diagram or code block: the GitHub links are the proof. Chosen to not repeat any section's own "Design decisions".
 - About section (built; text lives in `src/data/about.ts`): serif lead "Telecom engineer by degree, full-stack developer by choice." + story beside a calm photo in its own matted frame (Unsplash forest lake, sky cropped by zooming from the bottom; decorative, alt=""); "How I work" as a framed card (3 numbered principles with dividers), then three bordered cards (How I learn, Toolbox, Looking for) with no numbers: every block framed so each starts and ends visibly; the belief line as the closing quote; then a divider + `$ let's talk` terminal line to #contact (the same ending as Projects). No fact strip: every fact was already said elsewhere. Amber only on the eyebrow and the belief bar; no highlighted words. Toolbox lists only what can be defended in an interview ("Familiar" hidden while empty). No age, no second portrait, no skill bars, no religion on the page.
+- Project cards: one project per row at every width, as a large rectangle (md+: screenshot 46% on the left, text vertically centered beside it; phones: screenshot on top). Text: name + status + number, full summary, `highlights` as a stacked mono list (the "why click" lines), all tags, then links under a divider. Hovering the screenshot cycles through the screenshots in place; click opens the full viewer. No floating hover preview any more (it existed because the thumbnail was too small). Screenshots sit in a dark browser-window frame on a green panel, so a light/blue app screenshot is contained instead of clashing (don't re-theme Diraya for the portfolio). Four gold corners frame each card, the same `FrameCorners` as the project panel and the Technical details box (2px arms that fade into the border); they fade out on hover when the green glow takes over. Links: "See details" (project page), "Live demo" written out (new tab, once it exists), GitHub icon. No card lift/slide animation: it repeats the hover glow and reveals nothing.
 - Hero layout (lg+): text column + a photo column exactly as wide as the photo (no dead space between them); photo up to 360px (lg) / 420px (xl), sized from the screen height so it always fits; tagline widens to max-w-2xl at xl. Decided: the big photo wins over the "My projects" peek on short laptops (the peek only shows on tall screens). Terminal line 32px under the buttons. Kept on purpose: the full tagline (the deep dive proves it), the photo frame, no status dot next to `$ open to new roles`.
 - Contact section (built; text in `src/data/contact.ts`): "Let’s talk." answers About's `$ let's talk`. Email is the main action: one framed card with the amber corner (AccentCorner), the full address in mono, a solid amber "Write to me" (mailto) + a Copy button (status announced via role="status"), "I reply within a day", and Cairo's live local time with its offset computed by Intl (Egypt has DST, so never hard-code it). Beside it (lg) / under it: one row per other link (CV, LinkedIn, GitHub, WhatsApp via wa.me/20…), muted icons, no brand colors. A link with `href: null` is hidden, never shown dead. No photo, no section number, no contact form, no phone number shown (WhatsApp is text-only by intent). No closing terminal line: the footer ends the page.
 - Footer (in RootLayout, so on every page): AE. + © year + name · "Built with React, TypeScript & Tailwind · Source on GitHub" (this repo) · "Back to top" button (scrolls, then focuses the navbar logo). No mountain, no quote, no second photo: About already has the photo and the quote.
@@ -119,7 +128,10 @@ Be direct. Say when there is a better way. Do not just agree.
 - Name consistency: the site says Ahmed Elgaml; LinkedIn's shown name and custom URL should match
 - Hosting: SPA rewrite (every URL serves `index.html`)
 - About TODOs: full-size photo file, English level after the EF SET.
+- Key decisions: every "In the code" link must open a pushed file on Diraya's default branch (repo public). Diraya's demo template (`demo.seed.ts` DEMO_SEEDERS) is still empty: fill it before launch, the demo decision promises sample data.
+- Key decisions wording: Ahmed reads it aloud and rewords anything that doesn't sound like him (TODO in `diraya.ts`).
 
 ## Decisions still open
 
-- Deep dive sections still to build: Key decisions, Challenges, What I'd do differently
+- Deep dive sections still to build: Challenges, What I'd do differently
+- Database section: add the payments tables to the schema diagram (needs a new no-crossing layout), or say in a note that payments are covered in Key decisions

@@ -38,7 +38,7 @@ export type Project = {
   summary: string; // one line: what it is, for anyone
   problem: string; // why it exists: who struggled with what
   features: string[]; // the big ones, phrased as what they do for the user
-  highlights: string[]; // what's technically interesting, for engineers
+  highlights: string[]; // what's technically interesting, for engineers: the card's "why click" line
   stack: string[];
   status: ProjectStatus;
   screenshots: Screenshot[]; // order = the order they're shown in; the first is the default
@@ -66,7 +66,8 @@ const diraya: Project = {
     "Exams and marks, with each student’s progress over time",
     "Payments: collected vs outstanding, month by month",
   ],
-  highlights: ["Raw SQL on PostgreSQL, no ORM", "JWT auth", "Layered Express API"],
+  // Shown on the card as the "why click" line: keep each to a few words
+  highlights: ["Raw SQL on PostgreSQL, no ORM", "Server-side sessions + Google sign-in", "Layered Express API"],
   stack: ["React", "TypeScript", "Node.js", "Express", "PostgreSQL"],
   status: "in-development",
   // TODO: replace the placeholders with real screenshots (one per key feature works best)
@@ -106,3 +107,6 @@ export const projects: Project[] = [
 
 // The one place that knows the project page's URL shape.
 export const projectPath = (slug: string) => `/projects/${slug}`;
+
+// A file in a project's GitHub repo. HEAD = the default branch, so links survive a branch rename.
+export const repoFileUrl = (repo: string, path: string) => `${repo}/blob/HEAD/${path}`;

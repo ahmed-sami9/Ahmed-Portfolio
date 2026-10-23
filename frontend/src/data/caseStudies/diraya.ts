@@ -454,4 +454,95 @@ export const dirayaCaseStudy: CaseStudy = {
       ],
     },
   },
+
+  // Checked against Diraya's payments and demo modules, migrations and tests.
+  // TODO(Ahmed): read each one aloud; if a line doesn't sound like you, reword it.
+  keyDecisions: {
+    summary:
+      "The choices that shaped Diraya beyond any one layer. Each sits next to the obvious alternative, what it cost, and where it lives in the code.",
+    decisions: [
+      {
+        question: "How do you record money so the history can always be trusted?",
+        obvious: {
+          option: "A “paid” checkbox per student per month",
+          why: "No partial payments, no paying several months at once, and no record of who paid what, or when.",
+        },
+        chosen: {
+          option: "Payments are records; each month’s status is worked out from them",
+          how: [
+            "A payment that covers several months is split across them, oldest first",
+            "A mistake is voided with a reason, never deleted, so the history stays complete",
+            "Due, paid and status are never stored: one query computes them, so every screen agrees",
+          ],
+        },
+        cost: "Reads do more work: every status is calculated with joins when it’s read, instead of read from a column.",
+        code: [
+          { label: "payments.repository.ts", path: "backend/src/modules/payments/payments.repository.ts" },
+          { label: "create-payments migration", path: "backend/migrations/1792000000000_create-payments.js" },
+        ],
+      },
+      {
+        question: "What if the same payment is sent twice, or two arrive at once?",
+        obvious: {
+          option: "Disable the button after the first click",
+          why: "It can’t help with a retry after a lost response: the server has no way to know it’s a repeat.",
+        },
+        chosen: {
+          option: "Each payment carries its own ID, and the student is locked while it’s written",
+          how: [
+            "The form sends one `request_id`; a repeat hits a `UNIQUE` constraint and inserts nothing",
+            "The repeat gets the same answer as the first request, not an error",
+            "`SELECT … FOR UPDATE` on the student, so two payments at once can’t both fill the same month",
+          ],
+        },
+        cost: "Two writes about the same student wait for each other: a short queue in exchange for totals that are always right.",
+        code: [
+          { label: "payments.repository.ts", path: "backend/src/modules/payments/payments.repository.ts" },
+          { label: "payments.repository.test.ts", path: "backend/src/modules/payments/payments.repository.test.ts" },
+        ],
+      },
+      {
+        question: "How do you test rules that live in the database?",
+        obvious: {
+          option: "Mock the database",
+          why: "A mock can’t run a CHECK constraint or a row lock, so tests would pass while the real rules break.",
+        },
+        chosen: {
+          option: "Tests run against a real PostgreSQL test database",
+          how: [
+            "Exams and payments have repository tests for the SQL and constraints, and API tests that start the real app with a real session cookie",
+            "Each run creates its own teachers and deletes them at the end",
+            "A guard refuses to run on any database whose name doesn’t contain `_test`",
+          ],
+        },
+        cost: "Slower than mocks, and the files run one at a time (`--test-concurrency=1`) because they share one database.",
+        code: [
+          { label: "assertTestDatabase.ts", path: "backend/src/test/assertTestDatabase.ts" },
+          { label: "exams.api.test.ts", path: "backend/src/modules/exams/exams.api.test.ts" },
+        ],
+      },
+      {
+        question: "How can someone try it without signing up?",
+        obvious: {
+          option: "One shared demo account",
+          why: "Two visitors at the same time would edit, and delete, each other’s data.",
+        },
+        chosen: {
+          option: "A brand-new teacher account for every visit",
+          how: [
+            "Created and filled from a sample-data template in one transaction: complete, or not at all",
+            "Its email ends in `.invalid`, a domain that can never receive mail",
+            "After 24 hours it’s deleted, along with everything it owns (`ON DELETE CASCADE`)",
+          ],
+        },
+        cost: "Every visit writes to the database, so starting a demo is rate limited. Old demos are removed when the next one starts, so no scheduled job is needed.",
+        code: [
+          { label: "demo.service.ts", path: "backend/src/modules/demo/demo.service.ts" },
+          { label: "add-demo-teachers migration", path: "backend/migrations/1791402339531_add-demo-teachers.js" },
+        ],
+      },
+    ],
+    principle:
+      "The thread through all four: make the wrong outcome impossible, not just unlikely. Shared data, lost history, a double charge, a wiped database: each one is blocked by design, not by being careful.",
+  },
 };

@@ -1,16 +1,18 @@
 import { useMemo, useRef } from "react";
 import type { CaseStudy as CaseStudyData } from "@/data/caseStudies/types";
-import PanelCorners from "../PanelCorners";
+import FrameCorners from "@/components/ui/FrameCorners";
 import ArchitectureSection from "./architecture/ArchitectureSection";
 import AuthenticationSection from "./authentication/AuthenticationSection";
 import CaseStudyNav from "./CaseStudyNav";
 import { CASE_STUDY_ID, getCaseStudySections } from "./caseStudySections";
 import DatabaseSection from "./database/DatabaseSection";
+import KeyDecisionsSection from "./decisions/KeyDecisionsSection";
 import SectionPager from "./SectionPager";
 import { useCaseStudyTab } from "./useCaseStudyTab";
 
 type CaseStudyProps = {
   caseStudy: CaseStudyData;
+  repoUrl?: string; // the project's GitHub repo: sections link their claims to the real files
 };
 
 // The technical deep dive: one framed box under the project panel (same frame, same corners),
@@ -22,7 +24,7 @@ type CaseStudyProps = {
 //
 // Layout: on phones/tablets the tabs are a row above the content; from lg (1024px) they're a
 // column on the left that stays in view.
-function CaseStudy({ caseStudy }: CaseStudyProps) {
+function CaseStudy({ caseStudy, repoUrl }: CaseStudyProps) {
   const sections = useMemo(() => getCaseStudySections(caseStudy), [caseStudy]);
   const { activeId, select } = useCaseStudyTab(sections);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -56,7 +58,7 @@ function CaseStudy({ caseStudy }: CaseStudyProps) {
       tabIndex={-1} // so "Explore the technical details" can move focus here
       className="relative mt-10 scroll-mt-24 rounded-2xl border border-line bg-text/[0.02] p-5 outline-none sm:p-7 lg:p-6 xl:p-8"
     >
-      <PanelCorners />
+      <FrameCorners />
 
       <h2
         id="case-study-title"
@@ -93,6 +95,13 @@ function CaseStudy({ caseStudy }: CaseStudyProps) {
             )}
             {activeId === "authentication" && caseStudy.authentication && (
               <AuthenticationSection authentication={caseStudy.authentication} number={number} />
+            )}
+            {activeId === "key-decisions" && caseStudy.keyDecisions && (
+              <KeyDecisionsSection
+                keyDecisions={caseStudy.keyDecisions}
+                number={number}
+                repoUrl={repoUrl}
+              />
             )}
 
             <SectionPager sections={sections} activeIndex={activeIndex} onSelect={openFromPager} />
