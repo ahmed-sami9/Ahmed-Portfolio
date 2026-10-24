@@ -9,11 +9,23 @@ function LocalTime() {
   const now = useNow();
   const { id, city } = contact.timeZone;
 
+  // As parts, so the ":" between hour and minute can tick like a clock's (only a ":", since
+  // some locales use "." or "h"). Reduced motion: motion-safe keeps it still.
   const time = new Intl.DateTimeFormat(undefined, {
     timeZone: id,
     hour: "numeric",
     minute: "2-digit",
-  }).format(now);
+  })
+    .formatToParts(now)
+    .map((part, i) =>
+      part.type === "literal" && part.value === ":" ? (
+        <span key={i} className="motion-safe:animate-tick">
+          :
+        </span>
+      ) : (
+        part.value
+      ),
+    );
 
   const offset = new Intl.DateTimeFormat("en-US", { timeZone: id, timeZoneName: "shortOffset" })
     .formatToParts(now)

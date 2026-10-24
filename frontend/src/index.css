@@ -36,6 +36,30 @@
   --animate-blink: blink 1s step-end infinite;
   --animate-draw-line: draw-line 0.5s ease-out both; /* schema lines; skipped in JS for reduced motion */
   --animate-fade-in: fade-in 0.3s ease-out both;
+  --animate-frame-trace: frame-trace 1.6s ease-in-out 0.2s both; /* Contact email card, once */
+  --animate-tick: tick 2s ease-in-out infinite; /* the clock colon: one cycle = 2 seconds */
+
+  /* Draws the outline (pathLength=1, like draw-line), holds it, then fades it into the border */
+  @keyframes frame-trace {
+    0% {
+      stroke-dashoffset: 1;
+      opacity: 1;
+    }
+    70% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+
+  @keyframes tick {
+    50% {
+      opacity: 0.3;
+    }
+  }
 
   @keyframes typing {
     from {

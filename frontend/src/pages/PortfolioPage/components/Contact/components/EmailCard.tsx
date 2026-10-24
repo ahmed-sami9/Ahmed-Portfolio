@@ -1,7 +1,9 @@
+import { useLocation } from "react-router";
 import AccentCorner from "@/components/ui/AccentCorner";
 import { ArrowRightIcon, MailIcon } from "@/components/ui/icons";
 import { contact } from "@/data/contact";
 import CopyButton from "./CopyButton";
+import FrameTrace from "./FrameTrace";
 import LocalTime from "./LocalTime";
 
 // The main way to reach me, so it's the one framed card with the amber corner and the
@@ -9,10 +11,15 @@ import LocalTime from "./LocalTime";
 // set up (common on work laptops) can still read it or copy it.
 function EmailCard() {
   const { email } = contact;
+  // Every navbar click to Contact is a new location (new key): remounting FrameTrace replays it.
+  // Plain scrolling doesn't change the location, so the trace stays at "once".
+  const location = useLocation();
+  const traceKey = location.hash === "#contact" ? location.key : "scroll";
 
   return (
     <div className="relative flex flex-col rounded-2xl border border-line bg-text/[0.015] p-5 sm:p-7">
       <AccentCorner />
+      <FrameTrace key={traceKey} />
 
       <p className="flex items-center gap-2 text-sm text-subtle">
         <MailIcon />
