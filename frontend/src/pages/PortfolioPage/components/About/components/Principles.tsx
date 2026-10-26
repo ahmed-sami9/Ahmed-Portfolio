@@ -13,7 +13,8 @@ function Principles() {
           <span aria-hidden className="font-mono text-sm text-subtle">
             {String(i + 1).padStart(2, "0")}
           </span>
-          <p className="mt-2 font-medium text-text">{principle.title}</p>
+          {/* serif, like the headline and the closing quote: this is how I work, in my voice */}
+          <p className="mt-2 font-display text-xl tracking-tight text-text lg:text-2xl">{principle.title}</p>
           <p className="mt-2 text-sm leading-relaxed text-muted">{principle.text}</p>
         </li>
       ))}

@@ -5,7 +5,7 @@ export const about = {
   title: "Telecom engineer by degree, full-stack developer by choice.",
   story: [
     "I’ve always been drawn to computers: the digital world itself, not only the code behind it. After graduating in telecommunication engineering in 2023, I started learning programming, and it fit. The field never stops moving, and that suits me: I learn to become better, and to satisfy my curiosity.",
-    "I’m self-taught, and I start everything from its foundations. Before building on anything, I learn what it is and how it works: computer hardware and low-level fundamentals, operating systems, networks, data structures and algorithms, how programming languages work and differ, and now system design.",
+    "I’m self-taught, and I start everything from its foundations: before building on something, I learn what it is and how it works underneath. That’s taken me from hardware and operating systems to networks, and now system design.",
   ],
 
   // Decorative, so alt is empty: the text carries the meaning.
@@ -25,8 +25,8 @@ export const about = {
       text: "I follow best practices from the start, and I don’t leave broken windows: small problems get fixed when I see them, before they become the norm.",
     },
     {
-      title: "Built for what it actually needs, and readable by others",
-      text: "I design for the real requirements, what the system needs now and where it’s heading, no less and no more, and I structure code so someone else can read it and change it without a guide.",
+      title: "Built for real needs",
+      text: "I design for what the system needs now and where it’s heading, no less and no more, and I keep the code readable for whoever changes it next.",
     },
   ],
 
@@ -49,5 +49,5 @@ export const about = {
   closingLink: { label: "let's talk", href: "#contact" },
 
   belief:
-    "Wherever I work, I treat its success as my own: what’s ethically good for the company is good for me.",
+    "For me, work isn’t about being somewhere. It’s about providing value and exchanging it: what’s good for the place I work is good for me.",
 } as const;
