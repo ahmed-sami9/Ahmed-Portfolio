@@ -1,7 +1,9 @@
+import { useRef, type MouseEvent } from "react";
+import { useNavigate } from "react-router";
 import ProjectStatusBadge from "@/components/project/ProjectStatusBadge";
 import ProjectTags from "@/components/project/ProjectTags";
 import FrameCorners from "@/components/ui/FrameCorners";
-import type { Project } from "@/data/projects";
+import { projectPath, type Project } from "@/data/projects";
 import CardGlow from "./CardGlow";
 import ProjectHighlights from "./ProjectHighlights";
 import ProjectLinks from "./ProjectLinks";
@@ -20,22 +22,41 @@ type ProjectCardProps = {
 function ProjectCard({ project, number }: ProjectCardProps) {
   const { slug, name, summary, highlights, stack, status, screenshots, links } = project;
   const titleId = `project-${slug}`;
+  const navigate = useNavigate();
+  const pressedAt = useRef({ x: 0, y: 0 });
+
+  // The whole card opens the project page, as a mouse/touch shortcut. "See details" stays the
+  // real link (keyboard, screen readers, middle-click), so this needs no role or tabindex.
+  function openProject(event: MouseEvent<HTMLElement>) {
+    // Clicks on the card's own links (GitHub, Live demo, See details) do their own thing
+    if ((event.target as Element).closest("a, button")) return;
+    // A drag isn't a click: someone selecting text to copy it shouldn't be sent away
+    const moved = Math.hypot(event.clientX - pressedAt.current.x, event.clientY - pressedAt.current.y);
+    if (moved > 5 || window.getSelection()?.toString()) return;
+    // Ctrl/Cmd-click: a new tab, like any link
+    if (event.ctrlKey || event.metaKey) {
+      window.open(projectPath(slug), "_blank", "noopener");
+      return;
+    }
+    navigate(projectPath(slug));
+  }
 
   return (
     <li>
       <article
         aria-labelledby={titleId}
-        // Hover/focus: a green gradient border (CardGlow) and a soft green glow fade in, so the
-        // card reads as "selected". Green, not amber: amber is reserved for things you click.
-        // No movement, only light, to stay calm.
-        className="group/card relative flex flex-col gap-5 rounded-2xl border border-line bg-text/[0.02] p-3 transition-[border-color,box-shadow] duration-500 hover:border-transparent hover:shadow-[0_0_36px_-14px_var(--color-glow)] focus-within:border-transparent focus-within:shadow-[0_0_36px_-14px_var(--color-glow)] sm:p-4 md:flex-row md:items-center md:gap-8 lg:gap-10 lg:p-5"
+        onMouseDown={(event) => (pressedAt.current = { x: event.clientX, y: event.clientY })}
+        onClick={openProject}
+        // Hover/focus: a green gradient border (CardGlow) and a soft green glow fade in, and the
+        // pointer cursor: the card reads as "this opens". No scale or lift: only light, to stay calm.
+        className="group/card relative flex cursor-pointer flex-col gap-5 rounded-2xl border border-line bg-text/[0.02] p-3 transition-[border-color,box-shadow] duration-500 hover:border-transparent hover:shadow-[0_0_36px_-14px_var(--color-glow)] focus-within:border-transparent focus-within:shadow-[0_0_36px_-14px_var(--color-glow)] sm:p-4 md:flex-row md:items-center md:gap-8 lg:gap-10 lg:p-5"
       >
         <CardGlow />
         {/* the gold corners hand over to the green glow on hover, so the card never shows two frames */}
         <FrameCorners className="transition-opacity duration-500 group-hover/card:opacity-0 group-focus-within/card:opacity-0 motion-reduce:transition-none" />
 
         <div className="shrink-0 md:w-[46%]">
-          <ProjectThumbnail name={name} screenshots={screenshots} />
+          <ProjectThumbnail screenshots={screenshots} />
         </div>
 
         {/* min-w-0 lets long text wrap inside the column instead of widening the card */}

@@ -7,8 +7,7 @@ type ScreenshotStackProps = {
 };
 
 // All screenshots stacked on top of each other; only the current one is opaque,
-// so changing `index` is a smooth crossfade. Used by the thumbnail, the hover window
-// and the full viewer, which is why they always show the same image.
+// so changing `index` is a smooth crossfade. Used by the card's thumbnail.
 function ScreenshotStack({ screenshots, index, lazy = true }: ScreenshotStackProps) {
   return (
     <div className="relative aspect-[16/10] w-full">

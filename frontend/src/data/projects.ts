@@ -97,13 +97,8 @@ const diraya: Project = {
 };
 
 // Order = display order. Put the strongest project first.
-// TEMPORARY: Diraya repeated to preview the 2×2 grid. Replace with the real projects.
-export const projects: Project[] = [
-  diraya,
-  { ...diraya, slug: "diraya-copy-2" },
-  { ...diraya, slug: "diraya-copy-3" },
-  { ...diraya, slug: "diraya-copy-4" },
-];
+// TEMPORARY: the second card is a Diraya copy, holding the place of the second real project.
+export const projects: Project[] = [diraya, { ...diraya, slug: "diraya-copy-2" }];
 
 // The one place that knows the project page's URL shape.
 export const projectPath = (slug: string) => `/projects/${slug}`;
