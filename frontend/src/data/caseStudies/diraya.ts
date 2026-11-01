@@ -98,10 +98,12 @@ export const dirayaCaseStudy: CaseStudy = {
     summary:
       "PostgreSQL through raw SQL (`pg`), with the schema versioned in migrations. It’s designed so the database itself refuses impossible data: every rule that matters is a constraint, not just an `if` in the code.",
 
-    // Wide layout (4 columns × 3 rows), chosen so no two lines cross:
-    //   teachers → grades → groups → class_sessions
-    //               exams   students  attendance_records
-    //       exam_results              student_notes
+    // Wide layout (4 columns × 4 rows), chosen so no line crosses a table. students is the hub:
+    // the empty cells above and below it are corridors where its elbow lines bend.
+    //   teachers        grades         groups     group_schedules
+    //   (note)          exams          ·          class_sessions
+    //   (note)          exam_results   students   attendance_records
+    //   payment_months  payments       ·          student_months
     tables: [
       {
         name: "teachers",
@@ -111,7 +113,12 @@ export const dirayaCaseStudy: CaseStudy = {
       },
       {
         name: "grades",
-        columns: [{ name: "id", key: "pk" }, { name: "teacher_id", key: "fk" }, { name: "name" }],
+        columns: [
+          { name: "id", key: "pk" },
+          { name: "teacher_id", key: "fk" },
+          { name: "name" },
+          { name: "monthly_fee" },
+        ],
         parents: ["teachers"],
         cell: { col: 2, row: 1 },
       },
@@ -120,6 +127,17 @@ export const dirayaCaseStudy: CaseStudy = {
         columns: [{ name: "id", key: "pk" }, { name: "grade_id", key: "fk" }, { name: "name" }],
         parents: ["grades"],
         cell: { col: 3, row: 1 },
+      },
+      {
+        name: "group_schedules",
+        columns: [
+          { name: "id", key: "pk" },
+          { name: "group_id", key: "fk" },
+          { name: "weekday" },
+          { name: "start_time" },
+        ],
+        parents: ["groups"],
+        cell: { col: 4, row: 1 },
       },
       {
         name: "students",
@@ -131,13 +149,23 @@ export const dirayaCaseStudy: CaseStudy = {
           { name: "full_name" },
         ],
         parents: ["groups"],
-        cell: { col: 3, row: 2 },
+        cell: { col: 3, row: 3 },
         highlight: true,
       },
       {
-        name: "student_notes",
-        columns: [{ name: "id", key: "pk" }, { name: "student_id", key: "fk" }, { name: "text" }],
-        parents: ["students"],
+        name: "class_sessions",
+        columns: [{ name: "id", key: "pk" }, { name: "group_id", key: "fk" }, { name: "held_on" }],
+        parents: ["groups"],
+        cell: { col: 4, row: 2 },
+      },
+      {
+        name: "attendance_records",
+        columns: [
+          { name: "session_id", key: "pk-fk" },
+          { name: "student_id", key: "pk-fk" },
+          { name: "status" },
+        ],
+        parents: ["class_sessions", "students"],
         cell: { col: 4, row: 3 },
       },
       {
@@ -163,34 +191,53 @@ export const dirayaCaseStudy: CaseStudy = {
         cell: { col: 2, row: 3 },
       },
       {
-        name: "class_sessions",
-        columns: [{ name: "id", key: "pk" }, { name: "group_id", key: "fk" }, { name: "held_on" }],
-        parents: ["groups"],
-        cell: { col: 4, row: 1 },
+        name: "payments",
+        columns: [
+          { name: "id", key: "pk" },
+          { name: "student_id", key: "fk" },
+          { name: "amount" },
+          { name: "voided_at" },
+        ],
+        parents: ["students"],
+        cell: { col: 2, row: 4 },
       },
       {
-        name: "attendance_records",
+        name: "payment_months",
         columns: [
-          { name: "session_id", key: "pk-fk" },
-          { name: "student_id", key: "pk-fk" },
-          { name: "status" },
+          { name: "payment_id", key: "pk-fk" },
+          { name: "month", key: "pk" },
+          { name: "amount" },
         ],
-        parents: ["class_sessions", "students"],
-        cell: { col: 4, row: 2 },
+        parents: ["payments"],
+        cell: { col: 1, row: 4 },
+      },
+      {
+        name: "student_months",
+        columns: [
+          { name: "student_id", key: "pk-fk" },
+          { name: "month", key: "pk" },
+          { name: "skip_reason" },
+          { name: "note" },
+        ],
+        parents: ["students"],
+        cell: { col: 4, row: 4 },
       },
     ],
 
-    // Narrow screens: the same tables as three short families, top to bottom. A table's other
+    // Narrow screens: the same tables as short families, top to bottom. A table's other
     // parents (e.g. exam_results also belongs to students) show as a chip on its card.
     chains: [
-      { title: "Structure", tables: ["teachers", "grades", "groups", "students", "student_notes"] },
+      { title: "Structure", tables: ["teachers", "grades", "groups", "students"] },
+      { title: "Timetable", tables: ["group_schedules"] },
       { title: "Attendance", tables: ["class_sessions", "attendance_records"] },
       { title: "Exams", tables: ["exams", "exam_results"] },
+      { title: "Payments", tables: ["payments", "payment_months"] },
+      { title: "Skipped months & notes", tables: ["student_months"] },
     ],
 
     diagramNotes: [
-      "Every table carries `teacher_id`: each teacher’s data is isolated and checked in one `WHERE`.",
-      "Plus 3 auth tables: sessions, password-reset and email-verification tokens.",
+      "Top-level tables carry `teacher_id`; marks, attendance and payments are reached through their student. Either way, who owns a row is checked in the query’s `WHERE`.",
+      "Not drawn: `student_notes`, the teacher’s own `teacher_notes` and `activity` feed, and 3 auth tables (sessions, password-reset and email-verification tokens).",
     ],
 
     rules: [

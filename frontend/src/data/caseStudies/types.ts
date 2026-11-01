@@ -68,13 +68,13 @@ export type SchemaColumn = {
 
 // One table in the diagram.
 // `parents`: the tables it belongs to (its foreign keys). Each one becomes a 1 → N line.
-// `cell`: where it sits on the wide layout, a 4-column × 3-row grid. On narrow screens the
+// `cell`: where it sits on the wide layout, a 4-column × 4-row grid. On narrow screens the
 // tables simply stack in the order of this list, so the order is also the reading order.
 export type SchemaTable = {
   name: string;
   columns: SchemaColumn[];
   parents: string[];
-  cell: { col: 1 | 2 | 3 | 4; row: 1 | 2 | 3 };
+  cell: { col: 1 | 2 | 3 | 4; row: 1 | 2 | 3 | 4 };
   highlight?: boolean; // the central table, the one most others connect to
 };
 

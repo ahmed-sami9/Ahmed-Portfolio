@@ -14,16 +14,17 @@ type SchemaGraphProps = {
 // Tailwind only generates classes it can find written out in full, so the grid positions are
 // listed here instead of being built from strings like `col-start-${n}`.
 const COL = { 1: "col-start-1", 2: "col-start-2", 3: "col-start-3", 4: "col-start-4" };
-const ROW = { 1: "row-start-1", 2: "row-start-2", 3: "row-start-3" };
+const ROW = { 1: "row-start-1", 2: "row-start-2", 3: "row-start-3", 4: "row-start-4" };
 const NOTE_CELLS = ["col-start-1 row-start-2", "col-start-1 row-start-3"];
 
 // Draw-in timing: each level of the tree starts this long after the one above it
 const LEVEL_DELAY_MS = 220;
 const DRAW_MS = 500; // = the duration of animate-draw-line in index.css
 
-// The wide schema: a 4 × 3 grid, each table in the `cell` from the data, and the relationships
+// The wide schema: a 4 × 4 grid, each table in the `cell` from the data, and the relationships
 // drawn by an SVG laid over the grid (useSchemaLines measures where the tables really are).
-// The two notes fill the empty cells under `teachers`.
+// The two notes fill the empty cells under `teachers`; the empty cells above and below
+// `students` stay empty on purpose: they are where its elbow lines bend.
 //
 // Two bits of motion, both there to show something, not to decorate:
 //   - draw-in, once, when the diagram scrolls into view: lines grow parent → child, level by
