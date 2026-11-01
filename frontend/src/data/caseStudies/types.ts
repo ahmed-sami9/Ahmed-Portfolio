@@ -180,5 +180,22 @@ export type CaseStudy = {
   database?: Database;
   authentication?: Authentication;
   keyDecisions?: KeyDecisions;
-  // challenges, lessons: added as each one is built
+  lessons?: Lessons;
+};
+
+// ------------------------- Challenges & lessons --------------------------
+
+// Something I got wrong at first, told in three steps: what went wrong, how it was fixed,
+// and what I'd decide from the start next time (the step that matters most).
+export type Lesson = {
+  title: string; // the problem in a few words
+  problem: string;
+  fix: string;
+  lesson: string;
+  code: CodeRef[];
+};
+
+export type Lessons = {
+  summary: string;
+  items: Lesson[];
 };

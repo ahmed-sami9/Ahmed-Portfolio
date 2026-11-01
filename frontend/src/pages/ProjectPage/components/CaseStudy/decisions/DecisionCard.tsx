@@ -2,7 +2,7 @@ import { CheckIcon } from "@/components/ui/icons";
 import TextWithCode from "@/components/ui/TextWithCode";
 import type { KeyDecision } from "@/data/caseStudies/types";
 import BlockFrame from "../BlockFrame";
-import CodeRefLinks from "./CodeRefLinks";
+import CodeRefLinks from "../CodeRefLinks";
 
 const FACT_ROW = "grid gap-1 @xl:grid-cols-[6.5rem_minmax(0,1fr)] @xl:gap-6";
 

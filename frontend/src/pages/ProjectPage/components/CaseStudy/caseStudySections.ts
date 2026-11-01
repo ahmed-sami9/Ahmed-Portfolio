@@ -1,11 +1,4 @@
-import {
-  DatabaseIcon,
-  FlagIcon,
-  LayersIcon,
-  LightbulbIcon,
-  LockIcon,
-  RotateIcon,
-} from "@/components/ui/icons";
+import { DatabaseIcon, FlagIcon, LayersIcon, LightbulbIcon, LockIcon } from "@/components/ui/icons";
 import type { CaseStudy } from "@/data/caseStudies/types";
 
 // The id of the whole deep-dive box: "Explore the technical details" scrolls here.
@@ -27,7 +20,6 @@ export function getCaseStudySections(caseStudy: CaseStudy): CaseStudySectionInfo
     { id: "database", label: "Database", Icon: DatabaseIcon, ready: !!caseStudy.database },
     { id: "authentication", label: "Authentication", Icon: LockIcon, ready: !!caseStudy.authentication },
     { id: "key-decisions", label: "Key decisions", Icon: LightbulbIcon, ready: !!caseStudy.keyDecisions },
-    { id: "challenges", label: "Challenges", Icon: FlagIcon, ready: false },
-    { id: "what-id-do-differently", label: "What I’d do differently", Icon: RotateIcon, ready: false },
+    { id: "lessons", label: "Challenges & lessons", Icon: FlagIcon, ready: !!caseStudy.lessons },
   ];
 }

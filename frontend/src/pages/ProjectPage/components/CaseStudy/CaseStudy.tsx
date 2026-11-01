@@ -7,6 +7,7 @@ import CaseStudyNav from "./CaseStudyNav";
 import { CASE_STUDY_ID, getCaseStudySections } from "./caseStudySections";
 import DatabaseSection from "./database/DatabaseSection";
 import KeyDecisionsSection from "./decisions/KeyDecisionsSection";
+import LessonsSection from "./lessons/LessonsSection";
 import SectionPager from "./SectionPager";
 import { useCaseStudyTab } from "./useCaseStudyTab";
 
@@ -102,6 +103,9 @@ function CaseStudy({ caseStudy, repoUrl }: CaseStudyProps) {
                 number={number}
                 repoUrl={repoUrl}
               />
+            )}
+            {activeId === "lessons" && caseStudy.lessons && (
+              <LessonsSection lessons={caseStudy.lessons} number={number} repoUrl={repoUrl} />
             )}
 
             <SectionPager sections={sections} activeIndex={activeIndex} onSelect={openFromPager} />

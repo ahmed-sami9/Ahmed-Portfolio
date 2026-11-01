@@ -592,4 +592,48 @@ export const dirayaCaseStudy: CaseStudy = {
     principle:
       "The thread through all four: make the wrong outcome impossible, not just unlikely. Shared data, lost history, a double charge, a wiped database: each one is blocked by design, not by being careful.",
   },
+
+  // DRAFT: each story is checked against Diraya's migrations, but the takeaways are written
+  // for Ahmed to rewrite in his own words. Add the deployment lesson after going live.
+  // TODO(Ahmed): rewrite every "lesson" line in your words before launch.
+  lessons: {
+    summary:
+      "Three things I got wrong at first. Each was fixed with a migration that repaired the existing data, and each changed what I decide at the start of a project.",
+    items: [
+      {
+        title: "Emails that differed only by capitals",
+        problem:
+          "I stored emails exactly as they were typed, so “Ahmed@x.com” and “ahmed@x.com” could sign up as two teachers, and password login missed an account Google had saved in lower case.",
+        fix: "The API now lower-cases every email it receives, and a migration lower-cased the stored ones. If two accounts clash, it stops and names them instead of guessing which to keep, and a CHECK refuses any other case.",
+        lesson:
+          "Normalize input at the boundary from day one. Deciding when two values count as “the same” is a design decision, not a detail.",
+        code: [
+          { label: "lowercase-teacher-emails migration", path: "backend/migrations/1792600000000_lowercase-teacher-emails.js" },
+          { label: "auth.validation.ts", path: "backend/src/modules/auth/auth.validation.ts" },
+        ],
+      },
+      {
+        title: "Students who belonged to no group",
+        problem:
+          "At first a student only needed a grade. But groups own the attendance sheets, so a student outside every group would silently appear on none of them.",
+        fix: "A migration moved every such student into their grade’s oldest group (creating “Group 1” where none existed), made the group required, and added a composite foreign key so a student’s group must belong to their grade.",
+        lesson:
+          "Model the real-world rule in the schema first. If a state is wrong, make it impossible, before data piles up that has to be repaired.",
+        code: [
+          { label: "require-student-group migration", path: "backend/migrations/1791700000000_require-student-group.js" },
+        ],
+      },
+      {
+        title: "A fee that could be empty",
+        problem:
+          "A grade’s monthly fee started as optional. When payments arrived, an empty fee had no meaning: the system couldn’t work out what a student owed.",
+        fix: "A migration set every missing fee to 0 and made the column required, so a free grade now says 0 instead of nothing.",
+        lesson:
+          "Decide early what “unknown” means for every field money will depend on. A NULL is a question every query has to answer.",
+        code: [
+          { label: "require-grade-fee migration", path: "backend/migrations/1792100000000_require-grade-fee.js" },
+        ],
+      },
+    ],
+  },
 };
