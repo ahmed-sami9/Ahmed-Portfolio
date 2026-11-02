@@ -1,10 +1,12 @@
 import { useLocation } from "react-router";
 import AccentCorner from "@/components/ui/AccentCorner";
 import { ArrowRightIcon, MailIcon } from "@/components/ui/icons";
-import { contact } from "@/data/contact";
+import { contact, emailLinks } from "@/data/contact";
 import CopyButton from "./CopyButton";
 import FrameTrace from "./FrameTrace";
 import LocalTime from "./LocalTime";
+import MailFallback from "./MailFallback";
+import { useMailtoFallback } from "./useMailtoFallback";
 
 // The main way to reach me, so it's the one framed card with the amber corner and the
 // one solid amber button. The address is shown in full: a visitor without a mail app
@@ -15,6 +17,7 @@ function EmailCard() {
   // Plain scrolling doesn't change the location, so the trace stays at "once".
   const location = useLocation();
   const traceKey = location.hash === "#contact" ? location.key : "scroll";
+  const mailto = useMailtoFallback();
 
   return (
     <div className="relative flex flex-col rounded-2xl border border-line bg-text/[0.015] p-5 sm:p-7">
@@ -29,7 +32,8 @@ function EmailCard() {
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
         <a
-          href={`mailto:${email.address}`}
+          href={emailLinks.mailto}
+          onClick={mailto.onClick}
           className="group inline-flex items-center gap-2 rounded-full bg-accent-strong px-6 py-3 text-sm font-medium text-on-accent transition hover:brightness-105"
         >
           {email.cta}
@@ -37,6 +41,7 @@ function EmailCard() {
         </a>
         <CopyButton text={email.address} label="email address" />
       </div>
+      <MailFallback show={mailto.missed} />
 
       {/* mt-auto: when the card is stretched to the links column's height, this stays at the bottom */}
       <div className="mt-auto pt-8">

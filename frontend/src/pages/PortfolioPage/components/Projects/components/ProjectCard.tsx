@@ -53,7 +53,10 @@ function ProjectCard({ project, number }: ProjectCardProps) {
       >
         <CardGlow />
         {/* the gold corners hand over to the green glow on hover, so the card never shows two frames */}
-        <FrameCorners className="transition-opacity duration-500 group-hover/card:opacity-0 group-focus-within/card:opacity-0 motion-reduce:transition-none" />
+        <FrameCorners
+          only="top"
+          className="transition-opacity duration-500 group-hover/card:opacity-0 group-focus-within/card:opacity-0 motion-reduce:transition-none"
+        />
 
         <div className="shrink-0 md:w-[46%]">
           <ProjectThumbnail screenshots={screenshots} />

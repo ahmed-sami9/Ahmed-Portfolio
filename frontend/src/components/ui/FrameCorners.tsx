@@ -17,13 +17,18 @@ const CORNERS = [
 ];
 
 type FrameCornersProps = {
+  // "top": only the two top corners, for boxes stacked in a list (the project cards), where a
+  // card's bottom corners would crowd the next card's top ones. The border closes the bottom.
+  only?: "top";
   className?: string;
 };
 
-function FrameCorners({ className = "" }: FrameCornersProps) {
+function FrameCorners({ only, className = "" }: FrameCornersProps) {
+  const corners = only === "top" ? CORNERS.slice(0, 2) : CORNERS;
+
   return (
     <span aria-hidden className={`pointer-events-none absolute inset-0 ${className}`}>
-      {CORNERS.map((position) => (
+      {corners.map((position) => (
         <span
           key={position}
           className={`absolute h-8 w-12 border-accent/80 sm:h-10 sm:w-16 ${position}`}
