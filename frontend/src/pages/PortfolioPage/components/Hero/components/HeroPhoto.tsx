@@ -24,7 +24,9 @@ function HeroPhoto() {
     //   mr-4 keeps the frame's right rail inside the page edge.
     <figure className="relative ml-4 w-[calc(100%-2rem)] max-w-[26rem] md:mr-0 md:ml-auto md:w-[calc(100%-1rem)] md:max-w-[min(350px,max(280px,calc((100svh-13rem)*0.8)))] lg:mr-4 lg:w-[min(360px,max(280px,calc((100svh-15rem)*0.8)))] lg:max-w-none xl:w-[min(420px,max(280px,calc((100svh-15rem)*0.8)))]">
       <div className="relative">
+        {/* data-nav-align: at the top of the page, the navbar's links start at this edge */}
         <img
+          data-nav-align
           src={photo.src}
           alt={photo.alt}
           width={photo.width}

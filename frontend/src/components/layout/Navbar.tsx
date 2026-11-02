@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { Link, useMatch } from "react-router";
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation, useMatch } from "react-router";
 import { DownloadIcon } from "@/components/ui/icons";
 import { navLinks, sectionIds } from "@/data/navigation";
 import { profile } from "@/data/profile";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { useScrolled } from "@/hooks/useScrolled";
 import MobileMenu from "./MobileMenu";
+import { useNavOffset } from "./useNavOffset";
 
 function Navbar() {
   const scrolled = useScrolled();
@@ -18,6 +19,25 @@ function Navbar() {
   // The bar needs its background when scrolled, and also when the mobile menu is open
   // (otherwise, at the very top of the page, the menu panel would sit under a see-through bar).
   const showBackground = scrolled || menuOpen;
+
+  // Two modes: at the top the links sit on the right, starting at the hero photo's left edge;
+  // once scrolled (the moment the frosted background fades in) they glide to the center.
+  const barRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null);
+  const resumeRef = useRef<HTMLAnchorElement>(null);
+  const { pathname } = useLocation();
+  const offset = useNavOffset(barRef, navRef, resumeRef, pathname);
+
+  // The slide only answers the visitor: it's switched on by their first wheel, touch, key or
+  // click. A page that loads mid-way (a refresh, a /#about link) puts the links in place
+  // without gliding across, even though the browser scrolls there by itself.
+  const [canSlide, setCanSlide] = useState(false);
+  useEffect(() => {
+    const events = ["wheel", "touchstart", "keydown", "pointerdown"] as const;
+    const enable = () => setCanSlide(true);
+    events.forEach((type) => window.addEventListener(type, enable, { once: true, passive: true }));
+    return () => events.forEach((type) => window.removeEventListener(type, enable));
+  }, []);
 
   return (
     // Full-width sticky bar: transparent over the hero, frosted glass + hairline once scrolled.
@@ -37,7 +57,10 @@ function Navbar() {
       />
 
       {/* md+: three columns (1fr auto 1fr), so the links stay centered whether or not the resume link is shown */}
-      <div className="mx-auto flex h-20 w-full max-w-page items-center justify-between px-4 sm:px-6 md:grid md:grid-cols-[1fr_auto_1fr] lg:px-8">
+      <div
+        ref={barRef}
+        className="mx-auto flex h-20 w-full max-w-page items-center justify-between px-4 sm:px-6 md:grid md:grid-cols-[1fr_auto_1fr] lg:px-8"
+      >
         {/*
           Links are router <Link>s to "/#section", not plain "#section" anchors, so they also work
           from a project page: there they go back to the portfolio, then scroll to the section.
@@ -54,7 +77,15 @@ function Navbar() {
         </Link>
 
         {/* Desktop links */}
-        <nav aria-label="Main" className="hidden md:block">
+        {/* transform only: the cheapest property to animate, and clicks follow the links as they move */}
+        <nav
+          ref={navRef}
+          aria-label="Main"
+          style={{ transform: scrolled ? undefined : `translateX(${offset}px)` }}
+          className={`hidden md:block ${
+            canSlide ? "transition-transform duration-500 ease-in-out motion-reduce:transition-none" : ""
+          }`}
+        >
           <ul className="flex items-center gap-8 text-sm">
             {navLinks.map((link) => {
               const isActive = link.id === activeId;
@@ -85,6 +116,7 @@ function Navbar() {
         {/* Desktop resume link (on mobile it lives inside the menu). Hidden until the file exists. */}
         {profile.links.resume && (
           <a
+            ref={resumeRef}
             href={profile.links.resume}
             download
             className="hidden items-center gap-2 justify-self-end text-sm text-muted transition-colors hover:text-text md:inline-flex"

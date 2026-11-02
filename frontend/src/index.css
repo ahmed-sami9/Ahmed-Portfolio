@@ -10,7 +10,7 @@
   --color-text: #e8f0ea; /* headings, primary text */
   --color-muted: #9fb3a8; /* body copy, secondary text */
   --color-subtle: #6f857a; /* captions, least important text */
-  --color-line: #1d332c; /* hairlines, borders */
+  --color-line: #2f4d43; /* hairlines, borders: bright enough that every card reads as a box */
   --color-accent: #d3bc80; /* labels, frame lines, small highlights */
   --color-accent-strong: #fccb86; /* primary button fill */
   --color-on-accent: #241c11; /* text on top of the accent */

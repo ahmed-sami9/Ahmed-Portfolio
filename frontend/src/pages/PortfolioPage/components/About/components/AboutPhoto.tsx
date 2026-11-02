@@ -6,7 +6,8 @@ function AboutPhoto() {
   const { photo } = about;
 
   return (
-    <div className="rounded-2xl border border-line bg-text/[0.02] p-2">
+    // Half-strength border: a print's mat should whisper, quieter than the cards' outlines
+    <div className="rounded-2xl border border-line/50 bg-text/[0.02] p-2">
       <div className="relative overflow-hidden rounded-xl">
         <img
           src={photo.src}
