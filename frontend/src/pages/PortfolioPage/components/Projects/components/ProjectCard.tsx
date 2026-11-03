@@ -3,11 +3,17 @@ import { useNavigate } from "react-router";
 import ProjectStatusBadge from "@/components/project/ProjectStatusBadge";
 import ProjectTags from "@/components/project/ProjectTags";
 import FrameCorners from "@/components/ui/FrameCorners";
-import { projectPath, type Project } from "@/data/projects";
+import { projectPath, type Project, type Screenshot } from "@/data/projects";
 import CardGlow from "./CardGlow";
 import ProjectHighlights from "./ProjectHighlights";
 import ProjectLinks from "./ProjectLinks";
 import ProjectThumbnail from "./ProjectThumbnail";
+
+// The card shows the first few screenshots, the strongest screens; the project page shows them all.
+const CARD_SCREENSHOTS = 3;
+
+// A screenshot can have its own version made for the small card; otherwise the card uses the page's
+const toCardImage = (shot: Screenshot): Screenshot => (shot.card ? { ...shot, ...shot.card } : shot);
 
 type ProjectCardProps = {
   project: Project;
@@ -59,7 +65,7 @@ function ProjectCard({ project, number }: ProjectCardProps) {
         />
 
         <div className="shrink-0 md:w-[46%]">
-          <ProjectThumbnail screenshots={screenshots} />
+          <ProjectThumbnail screenshots={screenshots.slice(0, CARD_SCREENSHOTS).map(toCardImage)} />
         </div>
 
         {/* min-w-0 lets long text wrap inside the column instead of widening the card */}

@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useLocation } from "react-router";
 import AccentCorner from "@/components/ui/AccentCorner";
 import { ArrowRightIcon, MailIcon } from "@/components/ui/icons";
@@ -17,10 +18,14 @@ function EmailCard() {
   // Plain scrolling doesn't change the location, so the trace stays at "once".
   const location = useLocation();
   const traceKey = location.hash === "#contact" ? location.key : "scroll";
-  const mailto = useMailtoFallback();
+  const cardRef = useRef<HTMLDivElement>(null);
+  const mailto = useMailtoFallback(cardRef);
 
   return (
-    <div className="relative flex flex-col rounded-2xl border border-line bg-text/[0.015] p-5 sm:p-7">
+    <div
+      ref={cardRef}
+      className="relative flex flex-col rounded-2xl border border-line bg-text/[0.015] p-5 sm:p-7"
+    >
       <AccentCorner />
       <FrameTrace key={traceKey} />
 
@@ -41,7 +46,7 @@ function EmailCard() {
         </a>
         <CopyButton text={email.address} label="email address" />
       </div>
-      <MailFallback show={mailto.missed} />
+      <MailFallback phase={mailto.phase} />
 
       {/* mt-auto: when the card is stretched to the links column's height, this stays at the bottom */}
       <div className="mt-auto pt-8">

@@ -32,7 +32,9 @@ function HeroPhoto() {
           width={photo.width}
           height={photo.height}
           fetchPriority="high"
-          className="aspect-[4/5] w-full rounded-[14px] object-cover shadow-2xl shadow-black/50 ring-1 ring-text/10"
+          // Phones: wide 4:3 like the About photo, so the whole hero fits on the first screen;
+          // the crop is pulled up so the face stays centred. md+: the full 4:5 portrait.
+          className="aspect-[4/3] w-full rounded-[14px] object-cover object-[50%_18%] shadow-2xl shadow-black/50 ring-1 ring-text/10 md:aspect-[4/5] md:object-center"
         />
 
         {/* Soft fade on the left edge so the photo melts into the page */}
