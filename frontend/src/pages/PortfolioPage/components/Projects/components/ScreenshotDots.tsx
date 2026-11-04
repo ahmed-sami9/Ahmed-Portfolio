@@ -1,8 +1,8 @@
 type ScreenshotDotsProps = {
   count: number;
   index: number;
-  // When given, the dots are buttons that jump to a screenshot. Without it they're
-  // a read-only indicator (used in the hover window, which can't be clicked).
+  // When given, the dots are buttons that jump to a screenshot (the project card).
+  // Without it they're a read-only indicator.
   onSelect?: (index: number) => void;
   label?: string; // e.g. the project name, for screen readers
 };

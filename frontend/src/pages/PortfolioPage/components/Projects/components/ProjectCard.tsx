@@ -4,6 +4,7 @@ import ProjectStatusBadge from "@/components/project/ProjectStatusBadge";
 import ProjectTags from "@/components/project/ProjectTags";
 import FrameCorners from "@/components/ui/FrameCorners";
 import { projectPath, type Project, type Screenshot } from "@/data/projects";
+import { useIsVisible } from "@/hooks/useIsVisible";
 import CardGlow from "./CardGlow";
 import ProjectHighlights from "./ProjectHighlights";
 import ProjectLinks from "./ProjectLinks";
@@ -30,6 +31,8 @@ function ProjectCard({ project, number }: ProjectCardProps) {
   const titleId = `project-${slug}`;
   const navigate = useNavigate();
   const pressedAt = useRef({ x: 0, y: 0 });
+  // The screenshots play once the whole card is on screen (or fills it, on short screens)
+  const { ref: cardRef, visible: fullyShown } = useIsVisible<HTMLElement>();
 
   // The whole card opens the project page, as a mouse/touch shortcut. "See details" stays the
   // real link (keyboard, screen readers, middle-click), so this needs no role or tabindex.
@@ -50,6 +53,7 @@ function ProjectCard({ project, number }: ProjectCardProps) {
   return (
     <li>
       <article
+        ref={cardRef}
         aria-labelledby={titleId}
         onMouseDown={(event) => (pressedAt.current = { x: event.clientX, y: event.clientY })}
         onClick={openProject}
@@ -65,7 +69,11 @@ function ProjectCard({ project, number }: ProjectCardProps) {
         />
 
         <div className="shrink-0 md:w-[46%]">
-          <ProjectThumbnail screenshots={screenshots.slice(0, CARD_SCREENSHOTS).map(toCardImage)} />
+          <ProjectThumbnail
+            name={name}
+            screenshots={screenshots.slice(0, CARD_SCREENSHOTS).map(toCardImage)}
+            playing={fullyShown}
+          />
         </div>
 
         {/* min-w-0 lets long text wrap inside the column instead of widening the card */}

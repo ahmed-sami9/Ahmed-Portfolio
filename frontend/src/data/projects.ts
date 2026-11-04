@@ -57,15 +57,15 @@ export type Project = {
 const diraya: Project = {
   slug: "diraya",
   name: "Diraya",
-  tagline: "Teacher–student platform",
+  tagline: "Platform for private tutors",
   role: "Solo project",
   summary:
-    "A management platform for teachers and students: attendance, exams, marks and payments in one place.",
+    "A management platform for private tutors: students, groups, attendance, exams, marks and payments in one place.",
   // TODO(Ahmed): check this is your real reason for building it, in your words
   problem:
     "Small tutoring centers track attendance, marks and payments across paper, spreadsheets and WhatsApp. Nothing is connected, so a teacher can’t see who’s falling behind or who hasn’t paid.",
   features: [
-    "Separate teacher and student dashboards",
+    "Reports for parents, sent on WhatsApp as text or a PDF",
     "Attendance for a whole class in one screen",
     "Exams and marks, with each student’s progress over time",
     "Payments: collected vs outstanding, month by month",
@@ -113,7 +113,7 @@ const diraya: Project = {
     },
     {
       src: "/projects/diraya/signin-themes.webp",
-      alt: "The sign-in page in the light and the dark theme",
+      alt: "The sign-in page in the light and the dark theme, with the theme switch in the top-right corner",
       caption: "Light and dark themes",
     },
     {
